@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-PROJECT_DIR="/home/mhachami/eclipse-workspace/MHachami_ABenfil_MBachiri_S2_B2_Blogify/Blogify" 
+PROJECT_DIR="/home/mhachami/Desktop/projects/A2_brief/Blogify/Blogify" 
 TOMCAT_DIR="/opt/apache-tomcat-9.0.95"            
 TOMCAT_WEBAPPS_DIR="$TOMCAT_DIR/webapps" 
 
