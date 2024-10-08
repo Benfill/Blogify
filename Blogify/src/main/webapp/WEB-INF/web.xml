@@ -5,7 +5,20 @@
          id="WebApp_ID" version="2.5">
 
     <display-name>blogify</display-name>
-	<welcome-file-list>
-		<welcome-file>views/index.jsp</welcome-file>
-	</welcome-file-list>
+
+
+    <!-- Article mapping -->
+    <servlet>
+        <servlet-name>ArticleServlet</servlet-name>
+        <servlet-class>controller.ArticleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ArticleServlet</servlet-name>
+        <url-pattern>/article</url-pattern>
+    </servlet-mapping>
+    <!-- Article mapping -->
+
+    <welcome-file-list>
+        <welcome-file>views/article/index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
