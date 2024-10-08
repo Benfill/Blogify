@@ -24,18 +24,17 @@ public class ArticleServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/views/article/index.jsp").forward(req, res);
 
-        //    String action = req.getParameter("action");
-        //     if (action == null || action.isEmpty()) {
-        //         index(req, res);
-        //     } else if ("add".equalsIgnoreCase(action)) {
-        //         create(req, res);
-        //     } else if ("list".equalsIgnoreCase(action)) {
-        //       index(req, res);
-        //     } else if ("edit".equalsIgnoreCase(action)) {
-        //         edit(req,res);
-        //     }
+           String action = req.getParameter("action");
+            if (action == null || action.isEmpty()) {
+                index(req, res);
+            } else if ("create".equalsIgnoreCase(action)) {
+                create(req, res);
+            } else if ("list".equalsIgnoreCase(action)) {
+              index(req, res);
+            } else if ("edit".equalsIgnoreCase(action)) {
+                edit(req,res);
+            }
     }
 
 
@@ -43,7 +42,7 @@ public class ArticleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String action = req.getParameter("action");
-            if ("create".equals(action)) {
+            if ("add".equals(action)) {
                 createP(req, res);
             } else if ("update".equals(action)) {
                update(req,res);
@@ -62,7 +61,7 @@ public class ArticleServlet extends HttpServlet {
 	}
 
     protected void create(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/views/member/add.jsp").forward(req, res);
+		this.getServletContext().getRequestDispatcher("/views/article/create.jsp").forward(req, res);
 	}
 
     protected void edit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
