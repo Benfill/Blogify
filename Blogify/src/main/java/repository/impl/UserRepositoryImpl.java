@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.User;
-import enums.UserStatus;
+import enums.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.UserRepository;
@@ -31,7 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                User user = new User(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getDate("birth_date").toLocalDate(), UserStatus.valueOf(rs.getString("role")));
+                User user = new User(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getDate("birth_date").toLocalDate(), UserRole.valueOf(rs.getString("role")));
                 user.setId(rs.getInt("id"));
                 return user;
             }
@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                User user = new User(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getDate("birth_date").toLocalDate(), UserStatus.valueOf(rs.getString("role")));
+                User user = new User(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getDate("birth_date").toLocalDate(), UserRole.valueOf(rs.getString("role")));
                 user.setId(rs.getInt("id"));
                 return user;
             }
@@ -66,7 +66,7 @@ public class UserRepositoryImpl implements UserRepository {
         try (Statement st = cn.createStatement()) {
             ResultSet rs = st.executeQuery(q);
             while (rs.next()) {
-                User user = new User(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getDate("birth_date").toLocalDate(), UserStatus.valueOf(rs.getString("role")));
+                User user = new User(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getDate("birth_date").toLocalDate(), UserRole.valueOf(rs.getString("role")));
                 user.setId(rs.getInt("id"));
                 users.add(user);
             }
