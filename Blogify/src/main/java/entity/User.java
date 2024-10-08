@@ -1,53 +1,97 @@
 package entity;
-
-import enums.UserRole;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
+
+import enums.UserRole;
+
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    private Integer id;
-    private String firstName;
-    private String lastName;
+    private int id;
+    private String first_name;
+    private String second_name;
     private String email;
-    private LocalDate birthDate;
-    private UserRole role;
+    private Date birth_date;
     private String password;
+    private UserRole role;
 
-    public User(String firstName, String lastName, String email, LocalDate birthDate, UserRole role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.role = role;
+    public User(){
+
     }
-    public User(String firstName, String lastName, String email, LocalDate birthDate, UserRole role, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+
+
+    public User(String first_name , String second_name , String email , String password , Date birthDate , UserRole role){
+        this.first_name = first_name;
+        this.second_name = second_name;
         this.email = email;
-        this.birthDate = birthDate;
-        this.role = role;
         this.password = password;
+        this.birth_date = birthDate;
+        this.role = role;
+
     }
 
-    public User() {}
 
-    public Integer getId() {return this.id;}
-    public String getFirstName() {return this.firstName;}
-    public String getLastName() {return this.lastName;}
-    public String getEmail() {return this.email;}
-    public LocalDate getBirthDate() {return this.birthDate;}
-    public UserRole getRole() {return this.role;}
+    public User(int id ,String first_name , String second_name , String email , String password , Date birthDate , UserRole role){
+        this.id = id;
+        this.first_name = first_name;
+        this.second_name = second_name;
+        this.email = email;
+        this.password = password;
+        this.birth_date = birthDate;
+        this.role = role;
+    }
 
-    public void setId(int id) {this.id = id;}
-    public void setFirstName(String firstName) {this.firstName = firstName;}
-    public void setLastName(String lastName) {this.lastName = lastName;}
-    public void setEmail(String email) {this.email = email;}
-    public void setBirthDate(LocalDate birthDate) {this.birthDate = birthDate;}
-    public void setRole(UserRole role) {this.role = role;}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getSecond_name() {
+        return second_name;
+    }
+
+    public void setSecond_name(String second_name) {
+        this.second_name = second_name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getBirth_date() {
+        return birth_date;
+    }
+
+    public void setBirth_date(Date birth_date) {
+        this.birth_date = birth_date;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 }
