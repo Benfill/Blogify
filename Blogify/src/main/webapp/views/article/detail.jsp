@@ -2,7 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="layout" tagdir="/WEB-INF/tags"%>
 
-
 <layout:layout title="Article Detail">
 
 	<div
@@ -250,11 +249,12 @@
 							class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
 							(20)</h2>
 					</div>
-					<form class="mb-6">
+					<form class="mb-6" method="post"
+						action="${ pageContext.request.contextPath}/comment/store">
 						<div
 							class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
 							<label for="comment" class="sr-only">Your comment</label>
-							<textarea id="comment" rows="6"
+							<textarea id="comment" rows="6" name="comment_content"
 								class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
 								placeholder="Write a comment..." required></textarea>
 						</div>
@@ -347,15 +347,15 @@
 											<div>
 												<label for="comment"
 													class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-													Comment</label> <textarea name="comment" id="comment"
+													Comment</label>
+												<textarea name="comment" id="comment"
 													class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-													placeholder="Enter new Comment" required ></textarea>
+													placeholder="Enter new Comment" required></textarea>
 											</div>
-											
+
 											<button type="submit"
 												class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-												Save
-												</button>
+												Save</button>
 										</form>
 									</div>
 								</div>
