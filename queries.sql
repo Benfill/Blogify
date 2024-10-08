@@ -1,7 +1,7 @@
 /*
  * Create Author table
  */
-CREATE TABLE authors (
+CREATE TABLE users (
  	id INT PRIMARY KEY NOT NULL,
  	first_name VARCHAR(255),
  	last_name VARCHAR(255),
@@ -22,9 +22,9 @@ CREATE TABLE authors (
  	creation_date DATE,
  	published_date DATE,
  	article_status ENUM('Draft', 'Published'),
- 	author INT,
+ 	user_id INT,
  	picture VARCHAR(255),
- 	FOREIGN KEY (author) REFERENCES authors(id)
+ 	FOREIGN KEY (user_id) REFERENCES users(id)
  	
  );
  
@@ -38,5 +38,7 @@ CREATE TABLE authors (
  	 	creation_date DATE,
  	 	comment_status ENUM('Approved', 'Denied'),
  	 	article INT,
- 	 	 	FOREIGN KEY (article) REFERENCES articles(id)
+ 	 	user_id INT,
+ 	 	FOREIGN KEY (user_id) REFERENCES users(id),
+ 	 	FOREIGN KEY (article) REFERENCES articles(id)
  );
