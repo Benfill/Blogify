@@ -10,6 +10,6 @@ public interface UserRepository {
     User findUserByEmail(String email);
     List<User> getAllUsers();
     void addUser(User user);
-    void editUser(User user);
+    void updateUser(User user);
     void removeUser(int id);
 }

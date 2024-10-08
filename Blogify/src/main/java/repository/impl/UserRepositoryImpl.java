@@ -7,15 +7,18 @@ import org.slf4j.LoggerFactory;
 import repository.UserRepository;
 import util.DatabaseConnection;
 
+import javax.persistence.EntityManager;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
+    private EntityManager entityManager;
     private final Connection cn;
     private final Logger log;
 
-    public UserRepositoryImpl() {
+    public UserRepositoryImpl(EntityManager emf) {
+        entityManager = emf;
         cn = DatabaseConnection.getConnection();
         log = LoggerFactory.getLogger(this.getClass());
     }
@@ -91,7 +94,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void editUser(User user) {
+    public void updateUser(User user) {
         String q = "update users set first_name = ?, last_name = ?, email = ?, birth_date = ?, role = ? where id = ?";
         try (PreparedStatement ps = cn.prepareStatement(q)){
             ps.setString(1, user.getFirstName());
