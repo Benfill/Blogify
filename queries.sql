@@ -3,11 +3,11 @@
  */
 CREATE TABLE authors (
  	id INT PRIMARY KEY NOT NULL,
- 	firstName VARCHAR(255),
- 	lastName VARCHAR(255),
+ 	first_name VARCHAR(255),
+ 	last_name VARCHAR(255),
  	email VARCHAR(255) UNIQUE,
- 	birthDate DATE,
- 	role ENUM(Contributor, Editor)
+ 	birth_date DATE,
+ 	role ENUM('Contributor', 'Editor')
  	
 );
 
@@ -19,9 +19,9 @@ CREATE TABLE authors (
  	id INT PRIMARY KEY NOT NULL,
  	title VARCHAR(255) UNIQUE,
  	content TEXT,
- 	creationDate DATE,
- 	publishedDate DATE,
- 	articleStatus ENUM(Draft, Published),
+ 	creation_date DATE,
+ 	published_date DATE,
+ 	article_status ENUM('Draft', 'Published'),
  	author INT,
  	picture VARCHAR(255),
  	FOREIGN KEY (author) REFERENCES authors(id)
@@ -35,8 +35,8 @@ CREATE TABLE authors (
  CREATE TABLE comments (
  	 	id INT PRIMARY KEY NOT NULL,
  	 	content TEXT,
- 	 	creationDate DATE,
- 	 	commentStatus ENUM(Approved, Denied),
+ 	 	creation_date DATE,
+ 	 	comment_status ENUM('Approved', 'Denied'),
  	 	article INT,
  	 	 	FOREIGN KEY (article) REFERENCES articles(id)
  );
