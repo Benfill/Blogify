@@ -27,10 +27,10 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Entity mappings -->
-        <!-- <mapping class="entity.Comment"/> -->
+
+        <mapping class="entity.Comment"/>
         <mapping class="entity.User"/>
-        <!-- <mapping class="entity.Article"/> -->
+        <mapping class="entity.Article"/>
         
-        <!-- Other mappings can go here -->
     </session-factory>
 </hibernate-configuration>
