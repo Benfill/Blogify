@@ -6,8 +6,9 @@ CREATE TABLE users (
  	first_name VARCHAR(255),
  	last_name VARCHAR(255),
  	email VARCHAR(255) UNIQUE,
+ 	password VARCHAR(255),
  	birth_date DATE,
- 	role ENUM('Contributor', 'Editor')
+ 	role ENUM('Contributor', 'Editor', 'Admin')
  	
 );
 
