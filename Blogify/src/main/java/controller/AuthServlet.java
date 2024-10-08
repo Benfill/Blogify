@@ -10,13 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import service.impl.UserServiceImpl;
+
+
 public class AuthServlet extends HttpServlet {
-    private static final Logger logger = LoggerFactory.getLogger(ArticleServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthServlet.class);
+    private  UserServiceImpl userServiceImpl;
 
 
     @Override
     public void init() throws ServletException {
-      
+      this.userServiceImpl = new UserServiceImpl();
+
     }
 
 
@@ -52,10 +57,32 @@ public class AuthServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("login".equals(action)) {
-            logger.info(req.getParameter("email"));
+          
+
 
         } else if ("register".equals(action)) {
-            logger.info(req.getParameter("first_name"));
+            String email = req.getParameter("email");
+            String first_name = req.getParameter("first_name");
+            String second_name = req.getParameter("second_name");
+            String birth_date = req.getParameter("birth_date");
+            String password = req.getParameter("password");
+
+            logger.info("name  "+first_name);
+            logger.info("second_name  "+second_name);
+            logger.info("birth_date  "+birth_date);
+            logger.info("password  "+password);
+
+
+
+
+
+            if(this.userServiceImpl.userAlreadyExist(email)){
+                logger.info("user exist ");
+    
+            }else{
+                    logger.info("user dznt exist ");
+    
+            }
 
         } 
        

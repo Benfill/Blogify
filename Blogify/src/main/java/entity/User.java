@@ -2,8 +2,8 @@ package entity;
 
 import java.util.Date;
 
-import javax.jws.soap.SOAPBinding.Use;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import enums.UserRole;
@@ -12,11 +12,13 @@ import enums.UserRole;
 @Entity
 @Table(name = "users")
 public class User {
+    @Id
     private Long id;
     private String first_name;
     private String second_name;
     private String email;
     private Date birth_date;
+    private String password;
     private UserRole role;
 
     public User(){
@@ -24,21 +26,23 @@ public class User {
     }
 
 
-    public User(String first_name , String second_name , String email , Date birthDate , UserRole role){
+    public User(String first_name , String second_name , String email , String password , Date birthDate , UserRole role){
         this.first_name = first_name;
         this.second_name = second_name;
         this.email = email;
+        this.password = password;
         this.birth_date = birthDate;
         this.role = role;
 
     }
 
 
-    public User(Long id ,String first_name , String second_name , String email , Date birthDate , UserRole role){
+    public User(Long id ,String first_name , String second_name , String email , String password , Date birthDate , UserRole role){
         this.id = id;
         this.first_name = first_name;
         this.second_name = second_name;
         this.email = email;
+        this.password = password;
         this.birth_date = birthDate;
         this.role = role;
     }

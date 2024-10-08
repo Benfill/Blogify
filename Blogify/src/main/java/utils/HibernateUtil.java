@@ -2,19 +2,41 @@ package utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import repository.impl.UserRepositoryImpl;
 
 public class HibernateUtil {
-
+	private static final Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 
 	private static SessionFactory buildSessionFactory() {
 		try {
 			// Load environment variables from .env file
-			Dotenv dotenv = Dotenv.load();
+			// Dotenv dotenv = Dotenv.load();
 
+			Dotenv dotenv = Dotenv.configure()
+			.directory("/home/mhachami/Desktop/projects/A2_brief/Blogify/Blogify/.env")
+			.load();
+
+			logger.info("DB_DRIVER: " + dotenv.get("DB_DRIVER"));
+			logger.info("DB_URL: " + dotenv.get("DB_URL"));
+			logger.info("DB_USERNAME: " + dotenv.get("DB_USERNAME"));
+			logger.info("DB_PASSWORD: " + dotenv.get("DB_PASSWORD"));
+			
+			String driver = dotenv.get("DB_DRIVER");
+			String url = dotenv.get("DB_URL");
+			String username = dotenv.get("DB_USERNAME");
+			String password = dotenv.get("DB_PASSWORD");
+	
+			if (driver == null || url == null || username == null || password == null) {
+				throw new IllegalArgumentException("Database connection properties must not be null");
+			}
+	
 			// Create a configuration object
+			
 			Configuration configuration = new Configuration();
 
 			// Set the Hibernate properties dynamically from .env file
@@ -22,15 +44,19 @@ public class HibernateUtil {
 			configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
 			configuration.setProperty("hibernate.connection.username", dotenv.get("DB_USERNAME"));
 			configuration.setProperty("hibernate.connection.password", dotenv.get("DB_PASSWORD"));
+			
 
 			// Add mappings and other configurations
 			configuration.configure("hibernate.cfg.xml"); // Assuming you still have your xml mappings
+
+			
+			
 
 			// Build the SessionFactory from the configuration
 			return configuration.buildSessionFactory();
 
 		} catch (Throwable ex) {
-			System.err.println("Initial SessionFactory creation failed." + ex);
+			logger.error("Initial SessionFactory creation failed." + ex);
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
