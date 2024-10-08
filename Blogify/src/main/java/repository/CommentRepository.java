@@ -8,7 +8,7 @@ public interface CommentRepository {
 
 	List<Comment> readAll();
 
-	void insert(Comment comment);
+	void insert(Comment comment) throws Exception;
 
 	void update(Comment comment);
 

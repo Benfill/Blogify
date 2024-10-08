@@ -8,7 +8,7 @@ public interface CommentService {
 
 	List<Comment> getAll();
 
-	void post(String content, String articlId, int userId);
+	void post(String content, String articlId, int userId) throws Exception;
 
 	void update(Comment comment);
 
