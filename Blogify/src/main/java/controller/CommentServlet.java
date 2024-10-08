@@ -6,13 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import entity.Comment;
+import service.impl.CommentServiceImpl;
 
 public class CommentServlet extends HttpServlet {
 
@@ -20,10 +16,11 @@ public class CommentServlet extends HttpServlet {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+	private CommentServiceImpl commentService;
 
 	@Override
 	public void init() throws ServletException {
-
+		commentService = new CommentServiceImpl();
 	}
 
 	@Override
@@ -59,32 +56,13 @@ public class CommentServlet extends HttpServlet {
 	private void store(HttpServletRequest req, HttpServletResponse resp) {
 
 		String content = req.getParameter("comment_content");
-		Comment comment = new Comment();
+		String articleId = req.getParameter("article_id");
 
-		comment.setContent(content);
+		HttpSession session = req.getSession();
+		int userId = (int) session.getAttribute("user_id");
 
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		commentService.post(content, articleId, userId);
 
-		Session session = sessionFactory.openSession();
-		Transaction transaction = null;
-
-		try {
-			// Begin the transaction
-			transaction = session.beginTransaction();
-
-			// Save the entity
-			session.save(comment);
-
-			// Commit the transaction
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback(); // Roll back the transaction if it failed
-			}
-			e.printStackTrace(); // Log the error or handle it appropriately
-		} finally {
-			session.close(); // Ensure the session is closed
-		}
 	}
 
 }
