@@ -1,32 +1,98 @@
 package entity;
 
-import enums.UserStatus;
+import java.util.Date;
 
-import java.time.LocalDate;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import enums.UserRole;
 
 public class User {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private LocalDate birthDate;
-    private UserStatus role;
 
-    public User(String firstName, String lastName, String email, LocalDate birthDate, UserStatus role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.role = role;
-    }
-    public User() {}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String first_name;
+	private String second_name;
+	private String email;
+	private Date birth_date;
+	private String password;
+	private UserRole role;
 
-    public int getId() {return this.id;}
-    public String getFirstName() {return this.firstName;}
-    public String getLastName() {return this.lastName;}
-    public String getEmail() {return this.email;}
-    public LocalDate getBirthDate() {return this.birthDate;}
-    public UserStatus getRole() {return this.role;}
+	public User(String first_name, String second_name, String email, String password, Date birthDate, UserRole role) {
+		this.first_name = first_name;
+		this.second_name = second_name;
+		this.email = email;
+		this.password = password;
+		this.birth_date = birthDate;
+		this.role = role;
 
-    public void setId(int id) {this.id = id;}
+	}
+
+	public User(Long id, String first_name, String second_name, String email, String password, Date birthDate,
+			UserRole role) {
+		this.id = id;
+		this.first_name = first_name;
+		this.second_name = second_name;
+		this.email = email;
+		this.password = password;
+		this.birth_date = birthDate;
+		this.role = role;
+	}
+
+	public User() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFirst_name() {
+		return first_name;
+	}
+
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
+
+	public String getSecond_name() {
+		return second_name;
+	}
+
+	public void setSecond_name(String second_name) {
+		this.second_name = second_name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getBirth_date() {
+		return birth_date;
+	}
+
+	public void setBirth_date(Date birth_date) {
+		this.birth_date = birth_date;
+	}
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
