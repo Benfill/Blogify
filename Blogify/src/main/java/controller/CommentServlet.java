@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ public class CommentServlet extends HttpServlet {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final Logger log = Logger.getLogger(CommentServlet.class.getName());
 	private CommentServiceImpl commentService;
 
 	@Override
@@ -53,16 +55,35 @@ public class CommentServlet extends HttpServlet {
 
 	}
 
-	private void store(HttpServletRequest req, HttpServletResponse resp) {
-
+	private void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String content = req.getParameter("comment_content");
 		String articleId = req.getParameter("article_id");
 
 		HttpSession session = req.getSession();
-		int userId = (int) session.getAttribute("user_id");
+		Integer userId = (Integer) session.getAttribute("user_id");
 
-		commentService.post(content, articleId, userId);
+		System.out.println(
+				"Received request - Content: " + content + ", ArticleId: " + articleId + ", UserId: " + userId);
 
+		if (userId == null) {
+			System.err.println("User not logged in"); // Add this line for debugging
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
+
+		try {
+			commentService.post(content, articleId, userId);
+			System.out.println("Comment posted successfully"); // Add this line for debugging
+		} catch (Exception e) {
+			e.printStackTrace(); // Add this line to print the full stack trace
+			System.err.println("Error posting comment: " + e.getMessage()); // Add this line for debugging
+			req.setAttribute("errorMessage", "Failed to post comment: " + e.getMessage());
+			log.warning("error: " + e.getMessage());
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
 	}
 
 }
