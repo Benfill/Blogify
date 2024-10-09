@@ -37,9 +37,28 @@ public class Comment {
 	@JoinColumn(name = "article") // Column name in the comments table that refers to the article.
 	private Article article;
 
-	@ManyToOne(fetch = FetchType.LAZY) // Specifies a many-to-one relationship with the Article entity.
+	@ManyToOne(fetch = FetchType.LAZY) // Specifies a many-to-one relationship with the User entity.
 	@JoinColumn(name = "user_id") // Column name in the comments table that refers to the user
 	private User user;
+
+	public Comment(String content, LocalDate creationDate, Article article, User user) {
+		setContent(content);
+		setCreationDate(creationDate);
+		setArticle(article);
+		setUser(user);
+	}
+
+	public Comment(int id, String content, LocalDate creationDate, Article article, User user) {
+		setContent(content);
+		setCreationDate(creationDate);
+		setArticle(article);
+		setUser(user);
+		setId(id);
+	}
+
+	public Comment() {
+
+	}
 
 	public int getId() {
 		return id;
