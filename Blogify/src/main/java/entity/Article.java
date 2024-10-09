@@ -2,14 +2,21 @@ package entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import javax.persistence.CascadeType;
+
+import java.util.*;
 
 import enums.ArticleStatus;
 
@@ -17,36 +24,50 @@ import enums.ArticleStatus;
 @Entity
 @Table(name = "articles")
 public class Article {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String content;
-    private LocalDateTime creationDate;
-    private LocalDateTime publishedDateTime;
 
-    @Enumerated(EnumType.STRING)
-    private ArticleStatus status;
-
-    @ManyToOne
-    private User user;
-
+    @Column(name = "articlePictureUrl")
     private String articlePictureUrl;
 
-    public Article() {
-        this.creationDate = LocalDateTime.now(); 
-    }
+    @Column(name = "content")
+    private String content;
 
-    public Article(String title, String content, LocalDateTime publishedDateTime, ArticleStatus status, User user, String articlePictureUrl) {
-        this.title = title;
+    @Column(name = "creationDate")
+    private LocalDateTime creationDate;
+
+    @Column(name = "publishedDateTime")
+    private LocalDateTime publishedDateTime;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "title")
+    private String title;
+
+    // @Column(name = "user_id")
+    // private Long userId;
+    @ManyToOne
+	private User user;
+
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<Comment> comments;
+
+    public Article() {}
+
+    public Article(String articlePictureUrl, String content, LocalDateTime creationDate, LocalDateTime publishedDateTime, String status, String title, User user) {
+        this.articlePictureUrl = articlePictureUrl;
         this.content = content;
-        this.creationDate = LocalDateTime.now(); 
+        this.creationDate = LocalDateTime.now();
         this.publishedDateTime = publishedDateTime;
         this.status = status;
+        this.title = title;
         this.user = user;
-        this.articlePictureUrl = articlePictureUrl;
+
     }
+
 
     public Long getId() {
         return id;
@@ -56,12 +77,12 @@ public class Article {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getArticlePictureUrl() {
+        return articlePictureUrl;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setArticlePictureUrl(String articlePictureUrl) {
+        this.articlePictureUrl = articlePictureUrl;
     }
 
     public String getContent() {
@@ -88,31 +109,27 @@ public class Article {
         this.publishedDateTime = publishedDateTime;
     }
 
-    public ArticleStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(ArticleStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public User getUser() {
-        return user;
+    public String getTitle() {
+        return title;
     }
 
-    public void setUser(User user) {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public User getUserId() {
+        return this.user;
+    }
+
+    public void setUserId(User user) {
         this.user = user;
     }
-
-    public String getArticlePictureUrl() {
-        return articlePictureUrl;
-    }
-
-    public void setArticlePictureUrl(String articlePictureUrl) {
-        this.articlePictureUrl = articlePictureUrl;
-    }
-
-
-
-
 }
