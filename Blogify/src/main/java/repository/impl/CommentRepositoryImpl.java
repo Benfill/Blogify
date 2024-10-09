@@ -8,9 +8,9 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import entity.Comment;
-import repository.CommentRepository;
+import repository.ICommentRepository;
 
-public class CommentRepositoryImpl implements CommentRepository {
+public class CommentRepositoryImpl implements ICommentRepository {
 	private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 	@Override

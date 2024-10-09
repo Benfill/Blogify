@@ -4,7 +4,7 @@ import java.util.List;
 
 import entity.Comment;
 
-public interface CommentService {
+public interface ICommentService {
 
 	List<Comment> getAll();
 

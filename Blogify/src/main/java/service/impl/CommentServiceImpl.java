@@ -6,9 +6,9 @@ import java.util.List;
 import entity.Article;
 import entity.Comment;
 import entity.User;
-import service.CommentService;
+import service.ICommentService;
 
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl implements ICommentService {
 
 	@Override
 	public List<Comment> getAll() {

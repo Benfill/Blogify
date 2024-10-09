@@ -4,7 +4,7 @@ import java.util.List;
 
 import entity.Comment;
 
-public interface CommentRepository {
+public interface ICommentRepository {
 
 	List<Comment> readAll();
 
