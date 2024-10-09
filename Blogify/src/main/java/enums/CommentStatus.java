@@ -1,5 +1,5 @@
 package enums;
 
 public enum CommentStatus {
-	Approved, Denied
+	APPROVED, DENIED
 }

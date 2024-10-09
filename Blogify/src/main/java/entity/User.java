@@ -2,7 +2,10 @@ package entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,106 +13,110 @@ import javax.persistence.Table;
 
 import enums.UserRole;
 
-
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String first_name;
-    private String second_name;
-    private String email;
-    private Date birth_date;
-    private String password;
-    private UserRole role;
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
 
-    public User(){
+	@Column(name = "second_name", nullable = false)
+	private String secondName;
 
-    }
+	@Column(nullable = false, unique = true)
+	private String email;
 
+	@Column(name = "birth_date", nullable = false)
+	private Date birthDate;
 
-    public User(String first_name , String second_name , String email , String password , Date birthDate , UserRole role){
-        this.first_name = first_name;
-        this.second_name = second_name;
-        this.email = email;
-        this.password = password;
-        this.birth_date = birthDate;
-        this.role = role;
+	@Column(nullable = false)
+	private String password;
 
-    }
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
 
+	public User() {
 
-    public User(Long id ,String first_name , String second_name , String email , String password , Date birthDate , UserRole role){
-        this.id = id;
-        this.first_name = first_name;
-        this.second_name = second_name;
-        this.email = email;
-        this.password = password;
-        this.birth_date = birthDate;
-        this.role = role;
-    }
+	}
 
+	public User(String firstName, String secondName, String email, String password, Date birthDate, UserRole role) {
+		this.firstName = firstName;
+		this.secondName = secondName;
+		this.email = email;
+		this.password = password;
+		this.birthDate = birthDate;
+		this.role = role;
 
-    public Long getId() {
-        return id;
-    }
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public User(Long id, String firstName, String secondName, String email, String password, Date birthDate,
+			UserRole role) {
+		this.id = id;
+		this.firstName = firstName;
+		this.secondName = secondName;
+		this.email = email;
+		this.password = password;
+		this.birthDate = birthDate;
+		this.role = role;
+	}
 
-    public String getFirst_name() {
-        return first_name;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getSecond_name() {
-        return second_name;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setSecond_name(String second_name) {
-        this.second_name = second_name;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getSecondName() {
+		return secondName;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setSecond_name(String secondName) {
+		this.secondName = secondName;
+	}
 
-    public Date getBirth_date() {
-        return birth_date;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public UserRole getRole() {
-        return role;
-    }
+	public Date getBirthDate() {
+		return birthDate;
+	}
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getPassword(){
-        return this.password;
-    }
+	public UserRole getRole() {
+		return role;
+	}
 
-    
-   
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-
+	public String getPassword() {
+		return password;
+	}
 }

@@ -8,7 +8,7 @@ CREATE TABLE users (
  	email VARCHAR(255) UNIQUE,
  	password VARCHAR(255),
  	birth_date DATE,
- 	role ENUM('Contributor', 'Editor', 'Admin')
+ 	role ENUM('CONTRIBUTOR', 'EDITOR', 'ADMIN')
  	
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE users (
  	content TEXT,
  	creation_date DATE,
  	published_date DATE,
- 	article_status ENUM('Draft', 'Published'),
+ 	article_status ENUM('DRAFT', 'PUBLISHED'),
  	user_id INT,
  	picture VARCHAR(255),
  	FOREIGN KEY (user_id) REFERENCES users(id)
@@ -37,7 +37,7 @@ CREATE TABLE users (
  	 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  	 	content TEXT,
  	 	creation_date DATE,
- 	 	comment_status ENUM('Approved', 'Denied') DEFAULT NULL,
+ 	 	comment_status ENUM('APPROVED', 'DENIED') DEFAULT NULL,
  	 	article INT,
  	 	user_id INT,
  	 	FOREIGN KEY (user_id) REFERENCES users(id),

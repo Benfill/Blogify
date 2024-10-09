@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,9 +38,28 @@ public class Comment {
 	@JoinColumn(name = "article") // Column name in the comments table that refers to the article.
 	private Article article;
 
-	@ManyToOne(fetch = FetchType.LAZY) // Specifies a many-to-one relationship with the Article entity.
+	@ManyToOne(fetch = FetchType.LAZY) // Specifies a many-to-one relationship with the User entity.
 	@JoinColumn(name = "user_id") // Column name in the comments table that refers to the user
 	private User user;
+
+	public Comment(String content, LocalDate creationDate, Article article, User user) {
+		setContent(content);
+		setCreationDate(creationDate);
+		setArticle(article);
+		setUser(user);
+	}
+
+	public Comment(int id, String content, LocalDate creationDate, Article article, User user) {
+		setContent(content);
+		setCreationDate(creationDate);
+		setArticle(article);
+		setUser(user);
+		setId(id);
+	}
+
+	public Comment() {
+
+	}
 
 	public int getId() {
 		return id;
@@ -87,5 +107,10 @@ public class Comment {
 
 	public void setCommentStatus(CommentStatus commentStatus) {
 		this.commentStatus = commentStatus;
+	}
+
+	public String getFormattedCreationDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.creationDate.format(formatter);
 	}
 }
