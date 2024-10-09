@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entity.Comment;
 import service.impl.CommentServiceImpl;
 
 public class CommentServlet extends HttpServlet {
@@ -27,10 +29,29 @@ public class CommentServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		String action = req.getPathInfo();
-		if (action != null)
+		String filter = "all";
+		String pageParam = req.getParameter("page");
+		int page = 1;
+
+		if (pageParam != null && (pageParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(pageParam) > 0))
+			page = Integer.parseInt(pageParam);
+
+		if (action != null) {
 			action = action.substring(1, action.length());
-		resp.getWriter().println(action);
+			if (action.equals("approved"))
+				filter = "approved";
+			else if (action.equals("denied"))
+				filter = "denied";
+
+		}
+
+		List<Comment> comments = commentService.getAll(page, filter);
+
+		req.setAttribute("comments", comments);
+
+		req.getRequestDispatcher("/views/comment/index.jsp").forward(req, resp);
 
 	}
 

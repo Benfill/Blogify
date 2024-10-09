@@ -6,7 +6,7 @@ import entity.Comment;
 
 public interface ICommentRepository {
 
-	List<Comment> readAll();
+	List<Comment> readAll(int offset);
 
 	void insert(Comment comment) throws Exception;
 

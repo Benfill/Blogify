@@ -1,8 +1,10 @@
 package service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import entity.Comment;
 import entity.User;
@@ -13,12 +15,26 @@ import service.ICommentService;
 public class CommentServiceImpl implements ICommentService {
 
 	private static final Logger log = Logger.getLogger(CommentServiceImpl.class.getName());
-	private CommentRepositoryImpl commentRepo;
+	private CommentRepositoryImpl commentRepo = new CommentRepositoryImpl();
 
 	@Override
-	public List<Comment> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Comment> getAll(int page, String filter) {
+
+		int offset = (page - 1) * 5;
+
+		List<Comment> comments = commentRepo.readAll(offset);
+
+		if (comments == null) {
+			return new ArrayList<>(); // Return an empty list instead of null
+		}
+
+		if (filter != null && !filter.equals("all")) {
+			return comments.stream().filter(
+					c -> c.getCommentStatus() != null && c.getCommentStatus().toString().equalsIgnoreCase(filter))
+					.collect(Collectors.toList());
+		}
+
+		return comments;
 	}
 
 	@Override

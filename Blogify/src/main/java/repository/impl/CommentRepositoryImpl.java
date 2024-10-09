@@ -1,5 +1,6 @@
 package repository.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -7,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import entity.Comment;
 import repository.ICommentRepository;
@@ -16,9 +18,19 @@ public class CommentRepositoryImpl implements ICommentRepository {
 	private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 	@Override
-	public List<Comment> readAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Comment> readAll(int offset) {
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Query<Comment> query = session.createQuery("FROM Comment", Comment.class);
+			query.setFirstResult(offset);
+			query.setMaxResults(5);
+			return query.getResultList();
+		} catch (Exception e) {
+			// Log the error
+			e.printStackTrace();
+			return new ArrayList<>(); // Return an empty list instead of null
+		}
 	}
 
 	@Override
