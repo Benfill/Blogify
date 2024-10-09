@@ -1,28 +1,59 @@
 package service.impl;
 
-import java.util.Optional;
-
 import entity.User;
+import repository.UserRepository;
 import repository.impl.UserRepositoryImpl;
-import service.IUserService;
+import service.UserService;
 
-public class UserServiceImpl implements IUserService {
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
 
-    private final UserRepositoryImpl userRepositoryImpl = new UserRepositoryImpl(); 
+public class UserServiceImpl implements UserService {
+	private EntityManagerFactory emf;
+	private UserRepositoryImpl userRepository;
 
-   
-
-    @Override
-    public Boolean userAlreadyExist(String email) {
-       Optional<User> optionalUser = this.userRepositoryImpl.findUserByEmail(email);
-
-        return optionalUser.isPresent();
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-		return this.userRepositoryImpl.getUserByEmail(email);
+	public void UserService() {
+		emf = Persistence.createEntityManagerFactory("userPU");
+		EntityManager em = emf.createEntityManager();
+		userRepository = new UserRepositoryImpl(em);
 	}
-    
-    
-}
+
+	public List<User> getAllUsers() {
+		return userRepository.getAllUsers();
+	}
+
+	public User getUserById(int id) {
+		return userRepository.findUserById(id);
+	}
+
+	public User getUserByEmail(String email) {
+		return userRepository.findUserByEmail(email);
+	}
+
+	public void createUser(User user) {
+//        User user = new User(name, email, password);
+		userRepository.addUser(user);
+	}
+
+	public void updateUser(User u) {
+		User user = userRepository.findUserById(u.getId());
+		if (user != null) {
+			userRepository.updateUser(user);
+		}
+	}
+
+	public void deleteUser(int id) {
+		User user = userRepository.findUserById(id);
+		if (user != null) {
+			userRepository.removeUser(id);
+		}
+	}
+
+	@Override
+	public Boolean userAlreadyExist(String email) {
+		Optional<User> optionalUser = this.userRepositoryImpl.findUserByEmail(email);
+
+		return optionalUser.isPresent();
+	}

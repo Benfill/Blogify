@@ -4,11 +4,11 @@ import java.util.List;
 
 import entity.Comment;
 
-public interface CommentRepository {
+public interface ICommentRepository {
 
 	List<Comment> readAll();
 
-	void insert(Comment comment);
+	void insert(Comment comment) throws Exception;
 
 	void update(Comment comment);
 
