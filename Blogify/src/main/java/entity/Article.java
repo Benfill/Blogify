@@ -13,7 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import javax.persistence.CascadeType;
 
 import java.util.*;
@@ -28,13 +29,21 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "articlePictureUrl")
-    private String articlePictureUrl;
+     @NotEmpty(message = "Title is required.")
+    @Size(max = 255, message = "Title cannot exceed 255 characters.")
+    @Column(name = "title")
+    private String title;
 
+
+    @NotEmpty(message = "Content is required.")
+    @Size(max = 1000, message = "Content cannot exceed 1000 characters.")
     @Column(name = "content")
     private String content;
 
-    @Column(name = "creationDate")
+    @Column(name = "articlePictureUrl")
+    private String articlePictureUrl;
+
+    @Column(name = "creationDate", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime creationDate;
 
     @Column(name = "publishedDateTime")
@@ -43,8 +52,7 @@ public class Article {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "title")
-    private String title;
+   
 
     // @Column(name = "user_id")
     // private Long userId;
@@ -55,7 +63,9 @@ public class Article {
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Comment> comments;
 
-    public Article() {}
+    public Article() {
+        this.creationDate = LocalDateTime.now();
+    }
 
     public Article(String articlePictureUrl, String content, LocalDateTime creationDate, LocalDateTime publishedDateTime, String status, String title, User user) {
         this.articlePictureUrl = articlePictureUrl;
