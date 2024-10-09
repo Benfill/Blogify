@@ -2,23 +2,46 @@ package entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import enums.UserRole;
 
+@Entity
+@Table(name = "users")
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(nullable = false)
 	private String first_name;
+
+	@Column(nullable = false)
 	private String second_name;
+
+	@Column(nullable = false, unique = true)
 	private String email;
+
+	@Column(nullable = false)
 	private Date birth_date;
+
+	@Column(nullable = false)
 	private String password;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private UserRole role;
+
+	public User() {
+
+	}
 
 	public User(String first_name, String second_name, String email, String password, Date birthDate, UserRole role) {
 		this.first_name = first_name;
@@ -39,9 +62,6 @@ public class User {
 		this.password = password;
 		this.birth_date = birthDate;
 		this.role = role;
-	}
-
-	public User() {
 	}
 
 	public Long getId() {
@@ -94,5 +114,9 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 }
