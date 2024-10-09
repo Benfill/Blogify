@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -106,5 +107,10 @@ public class Comment {
 
 	public void setCommentStatus(CommentStatus commentStatus) {
 		this.commentStatus = commentStatus;
+	}
+
+	public String getFormattedCreationDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.creationDate.format(formatter);
 	}
 }

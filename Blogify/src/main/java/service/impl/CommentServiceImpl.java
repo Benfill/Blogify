@@ -2,13 +2,18 @@ package service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Logger;
 
-import entity.Article;
 import entity.Comment;
 import entity.User;
+import model.ArticleModel;
+import repository.impl.CommentRepositoryImpl;
 import service.ICommentService;
 
 public class CommentServiceImpl implements ICommentService {
+
+	private static final Logger log = Logger.getLogger(CommentServiceImpl.class.getName());
+	private CommentRepositoryImpl commentRepo;
 
 	@Override
 	public List<Comment> getAll() {
@@ -17,13 +22,16 @@ public class CommentServiceImpl implements ICommentService {
 	}
 
 	@Override
-	public void post(String content, String articlId, int userId) throws Exception {
-		if (content == null || articlId == null || userId == 0)
-			throw new Exception("Something went wrong");
+	public void post(String content, String articleId, int userId) throws Exception {
+		if (content == null || content.trim().isEmpty() || articleId == null || userId <= 0)
+			throw new Exception("Invalid input parameters");
 
 		User user = new UserServiceImpl().getUserById(userId);
-		Article article = new ArticleServiceImpl().getArticleById(Integer.parseInt(articlId));
-		Comment comment = new Comment(content, LocalDate.now(), article, user);
+		ArticleModel article = new ArticleServiceImpl().getArticleById(articleId);
+		Comment comment = new Comment(content, LocalDate.now(), article.getArticle(), user);
+
+		System.out.println("Attempting to insert comment: " + comment);
+		commentRepo.insert(comment);
 
 	}
 

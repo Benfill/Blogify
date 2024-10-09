@@ -1,6 +1,7 @@
 package repository.impl;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +12,7 @@ import entity.Comment;
 import repository.ICommentRepository;
 
 public class CommentRepositoryImpl implements ICommentRepository {
+	private static final Logger log = Logger.getLogger(CommentRepositoryImpl.class.getName());
 	private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 	@Override
@@ -35,7 +37,10 @@ public class CommentRepositoryImpl implements ICommentRepository {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			throw new Exception("Something wen wrong with Database");
+			e.printStackTrace(); // Add this line to print the full stack trace
+			System.err.println("Error inserting comment: " + e.getMessage());
+			log.warning("error: " + e.getMessage());
+			throw new Exception("Something went wrong with Database");
 		} finally {
 			session.close();
 		}
