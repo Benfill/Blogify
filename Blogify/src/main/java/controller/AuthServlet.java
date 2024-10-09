@@ -29,28 +29,26 @@ public class AuthServlet extends HttpServlet {
     private  UserServiceImpl userServiceImpl;
     private AuthServiceImpl authServiceImpl;
 
-
     @Override
     public void init() throws ServletException {
       this.userServiceImpl = new UserServiceImpl();
       this.authServiceImpl = new AuthServiceImpl();
-
     }
 
-
-
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
+        HttpSession session = req.getSession(false);
         String action = req.getParameter("action");
-
-        if (action == null || action.isEmpty()) {
-            this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
-        } else if ("register".equalsIgnoreCase(action)) {
-            this.getServletContext().getRequestDispatcher("/views/auth/register.jsp").forward(req, res);
+        if (session == null || session.getAttribute("loggedInUser") == null) {
+            if (action == null || action.isEmpty()) {
+                this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
+            } else if ("register".equalsIgnoreCase(action)) {
+                this.getServletContext().getRequestDispatcher("/views/auth/register.jsp").forward(req, res);
+            } else {
+                this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
+            }
+        } else {
+            res.sendRedirect(req.getContextPath() + "/views/article/index.jsp");
         }
-            
-
-        
     }
 
 
@@ -63,13 +61,12 @@ public class AuthServlet extends HttpServlet {
 
         if ("login".equals(action)) {
           login(req, res);
-
         } else if ("register".equals(action)) {
             register(req,res);
-        } 
-       
+        } else if ("logout".equals(action)) {
+            logout(req, res);
+        }
     }
-
 
     protected void register(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String email = req.getParameter("email");
@@ -81,17 +78,13 @@ public class AuthServlet extends HttpServlet {
 
         UserModel model = new UserModel();
 
-
         if(this.userServiceImpl.userAlreadyExist(email)){
             model.setError("Email already exist ");
             req.setAttribute("model", model);
             this.getServletContext().getRequestDispatcher("/views/auth/register.jsp").forward(req, res);
 
-
         }else{
-            if(role==null)
-            role="CONTRIBUTOR";
-
+            if(role==null) role="CONTRIBUTOR";
 
             logger.info("name  "+first_name);
             logger.info("second_name  "+second_name);
@@ -99,14 +92,12 @@ public class AuthServlet extends HttpServlet {
             logger.info("password  "+password);
             logger.info("role  "+role);
 
-
             Date birth_date = null;
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy"); 
                 birth_date = dateFormat.parse(birth_dateStr);
             } catch (ParseException e) {
                 logger.error("Cant cast the birth date" ,e);
-
             }
 
             User newUser = new User();
@@ -131,12 +122,7 @@ public class AuthServlet extends HttpServlet {
                 req.setAttribute("model", model);
                 this.getServletContext().getRequestDispatcher("/views/auth/register.jsp").forward(req, res);
             }
-
-            
-
         }
-
-      
     }
 
     protected void login(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -148,7 +134,7 @@ public class AuthServlet extends HttpServlet {
         if (this.userServiceImpl.userAlreadyExist(email)) {
             User user = userServiceImpl.getUserByEmail(email);
             String hashedPassword = user.getPassword();
-            
+
             if (PasswordUtil.verifyPassword(hashedPassword, plainPassword)) {
                 HttpSession session = req.getSession();
                 session.setAttribute("loggedInUser", user);
@@ -165,5 +151,13 @@ public class AuthServlet extends HttpServlet {
             this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
         }
     }
+    protected void logout(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        res.sendRedirect(req.getContextPath() + "/views/auth/login.jsp");  // Redirect to login page
+    }
+
 
 }
