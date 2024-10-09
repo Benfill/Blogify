@@ -21,6 +21,7 @@ import enums.UserRole;
 import service.impl.AuthServiceImpl;
 import service.impl.UserServiceImpl;
 import utils.PasswordUtil;
+import javax.servlet.http.HttpSession;
 
 
 public class AuthServlet extends HttpServlet {
@@ -61,8 +62,7 @@ public class AuthServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("login".equals(action)) {
-          
-
+          login(req, res);
 
         } else if ("register".equals(action)) {
             register(req,res);
@@ -138,5 +138,32 @@ public class AuthServlet extends HttpServlet {
 
       
     }
-    
+
+    protected void login(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String email = req.getParameter("email");
+        String plainPassword = req.getParameter("password");
+
+        UserModel userModel = new UserModel();
+
+        if (this.userServiceImpl.userAlreadyExist(email)) {
+            User user = userServiceImpl.getUserByEmail(email);
+            String hashedPassword = user.getPassword();
+            
+            if (PasswordUtil.verifyPassword(hashedPassword, plainPassword)) {
+                HttpSession session = req.getSession();
+                session.setAttribute("loggedInUser", user);
+
+                res.sendRedirect(req.getContextPath() + "/views/article/index.jsp");
+            } else {
+                userModel.setError("Invalid password");
+                req.setAttribute("model", userModel);
+                this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
+            }
+        } else {
+            userModel.setError("User not found");
+            req.setAttribute("model", userModel);
+            this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
+        }
+    }
+
 }

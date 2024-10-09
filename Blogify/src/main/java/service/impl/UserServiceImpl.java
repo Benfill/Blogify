@@ -19,6 +19,10 @@ public class UserServiceImpl implements IUserService {
         return optionalUser.isPresent();
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+		return this.userRepositoryImpl.getUserByEmail(email);
+	}
     
     
 }

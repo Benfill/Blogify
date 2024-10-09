@@ -18,7 +18,7 @@ public class HibernateUtil {
 			// Dotenv dotenv = Dotenv.load();
 
 			Dotenv dotenv = Dotenv.configure()
-			.directory("/home/mhachami/Desktop/projects/A2_brief/Blogify/Blogify/.env")
+			.directory("/home/exshy/Documents/GitHub/Blogify/Blogify/.env")
 			.load();
 
 			logger.info("DB_DRIVER: " + dotenv.get("DB_DRIVER"));

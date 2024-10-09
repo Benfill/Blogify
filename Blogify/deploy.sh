@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-PROJECT_DIR="/home/mhachami/Desktop/projects/A2_brief/Blogify/Blogify" 
-TOMCAT_DIR="/opt/apache-tomcat-9.0.95"            
+PROJECT_DIR="/home/exshy/Documents/GitHub/Blogify/Blogify"
+TOMCAT_DIR="/opt/apache-tomcat-9.0.65"
 TOMCAT_WEBAPPS_DIR="$TOMCAT_DIR/webapps" 
 
 build_project() {
