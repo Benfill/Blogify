@@ -1,5 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page import="model.UserModel"%>
+<%
+  UserModel model=new UserModel();
+  if(request.getAttribute("model") != null){
+	 model=(UserModel)request.getAttribute("model");
+  }
+%> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +31,11 @@
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Sign Up
                     </h1>
+                    <c:if test="${not empty model.error}">
+                        <div style="color: red;">
+                            <strong>${model.error}</strong>
+                        </div>
+                    </c:if>
                     <form id="register" class="space-y-4 md:space-y-6" action="auth?action=register" method="POST">
                         <div>
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
@@ -53,6 +65,15 @@
                         <div>
                             <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
                             <input type="password" name="confirm_password" id="confirm_password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                        </div>
+                        <div>
+                            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                            <select name="role"  id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Choose a role</option>
+                                <option value="CONTRIBUTOR">CONTRIBUTOR</option>
+                                <option value="EDITOR">EDITOR</option>
+
+                              </select>
                         </div>
                         <div class="flex items-start">
                             <div class="flex items-center h-5">

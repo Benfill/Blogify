@@ -2,7 +2,7 @@
  * Create Author table
  */
 CREATE TABLE users (
- 	id INT PRIMARY KEY NOT NULL,
+ 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  	first_name VARCHAR(255),
  	last_name VARCHAR(255),
  	email VARCHAR(255) UNIQUE,
@@ -17,7 +17,7 @@ CREATE TABLE users (
  */
 
  CREATE TABLE articles (
- 	id INT PRIMARY KEY NOT NULL,
+ 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  	title VARCHAR(255) UNIQUE,
  	content TEXT,
  	creation_date DATE,
@@ -34,10 +34,10 @@ CREATE TABLE users (
   */
  
  CREATE TABLE comments (
- 	 	id INT PRIMARY KEY NOT NULL,
+ 	 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  	 	content TEXT,
  	 	creation_date DATE,
- 	 	comment_status ENUM('Approved', 'Denied'),
+ 	 	comment_status ENUM('Approved', 'Denied') DEFAULT NULL,
  	 	article INT,
  	 	user_id INT,
  	 	FOREIGN KEY (user_id) REFERENCES users(id),
