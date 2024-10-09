@@ -1,118 +1,137 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import enums.ArticleStatus;
-
 
 @Entity
 @Table(name = "articles")
 public class Article {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String content;
-    private LocalDateTime creationDate;
-    private LocalDateTime publishedDateTime;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String title;
+	private String content;
+	private LocalDateTime creationDate;
+	private LocalDateTime publishedDateTime;
 
-    @Enumerated(EnumType.STRING)
-    private ArticleStatus status;
+	@Enumerated(EnumType.STRING)
+	private ArticleStatus status;
 
-    @ManyToOne
-    private User user;
+	@ManyToOne
+	private User user;
 
-    private String articlePictureUrl;
+	private String articlePictureUrl;
 
-    public Article() {
-        this.creationDate = LocalDateTime.now(); 
-    }
+	@OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<Comment> comments;
 
-    public Article(String title, String content, LocalDateTime publishedDateTime, ArticleStatus status, User user, String articlePictureUrl) {
-        this.title = title;
-        this.content = content;
-        this.creationDate = LocalDateTime.now(); 
-        this.publishedDateTime = publishedDateTime;
-        this.status = status;
-        this.user = user;
-        this.articlePictureUrl = articlePictureUrl;
-    }
+	public Article() {
+		this.creationDate = LocalDateTime.now();
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Article(String title, String content, LocalDateTime publishedDateTime, ArticleStatus status, User user,
+			String articlePictureUrl) {
+		this.title = title;
+		this.content = content;
+		this.creationDate = LocalDateTime.now();
+		this.publishedDateTime = publishedDateTime;
+		this.status = status;
+		this.user = user;
+		this.articlePictureUrl = articlePictureUrl;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
 
-    public LocalDateTime getPublishedDateTime() {
-        return publishedDateTime;
-    }
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
 
-    public void setPublishedDateTime(LocalDateTime publishedDateTime) {
-        this.publishedDateTime = publishedDateTime;
-    }
+	public LocalDateTime getPublishedDateTime() {
+		return publishedDateTime;
+	}
 
-    public ArticleStatus getStatus() {
-        return status;
-    }
+	public void setPublishedDateTime(LocalDateTime publishedDateTime) {
+		this.publishedDateTime = publishedDateTime;
+	}
 
-    public void setStatus(ArticleStatus status) {
-        this.status = status;
-    }
+	public ArticleStatus getStatus() {
+		return status;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setStatus(ArticleStatus status) {
+		this.status = status;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public String getArticlePictureUrl() {
-        return articlePictureUrl;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public void setArticlePictureUrl(String articlePictureUrl) {
-        this.articlePictureUrl = articlePictureUrl;
-    }
+	public List<Comment> getComments() {
+		return comments;
+	}
 
+	public String getArticlePictureUrl() {
+		return articlePictureUrl;
+	}
 
+	public void setArticlePictureUrl(String articlePictureUrl) {
+		this.articlePictureUrl = articlePictureUrl;
+	}
 
+	public String getFormattedCreationDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.creationDate.format(formatter);
+	}
+
+	public String getFormattedPublishedDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.publishedDateTime.format(formatter);
+	}
 
 }

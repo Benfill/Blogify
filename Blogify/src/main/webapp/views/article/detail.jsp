@@ -18,13 +18,15 @@
 								alt="Jese Leos">
 							<div>
 								<a href="#" rel="author"
-									class="text-xl font-bold text-gray-900 dark:text-white">Jese
-									Leos</a>
-								<p class="text-base text-gray-500 dark:text-gray-400">Graphic
-									Designer, educator & CEO Flowbite</p>
+									class="text-xl font-bold text-gray-900 dark:text-white">${ user.firstName }
+								<p class="text-base text-gray-500 dark:text-gray-400"></p>
 								<p class="text-base text-gray-500 dark:text-gray-400">
-									<time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb.
-										8, 2022</time>
+									<%-- <time pubdate datetime="${article.formattedCreationDate}"
+										title="${article.formattedCreationDate}">${article.formattedCreationDate}</time>
+									<time pubdate datetime="${article.formattedPublishedDate}"
+										title="${article.formattedPublishedDate}">${article.formattedPublishedDate}</time>
+ --%>
+
 								</p>
 							</div>
 						</div>
@@ -32,16 +34,14 @@
 					<h1
 						class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">${ article.title }</h1>
 				</header>
-				<p class="lead">
-					${ article.content }
-				</p>
+				<p class="lead">${ article.content }</p>
 				<figure>
 					<img
 						src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"
 						alt="">
 					<figcaption>Digital art by Anonymous</figcaption>
 				</figure>
-	
+
 				<section class="not-format">
 					<div class="flex justify-between items-center mb-6">
 						<h2
@@ -50,7 +50,7 @@
 					</div>
 					<form class="mb-6" method="post"
 						action="${ pageContext.request.contextPath}/comment/store">
-						<input type="hidden" value="${ article.id }" name="article_id"/>
+						<input type="hidden" value="${ article.id }" name="article_id" />
 						<div
 							class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
 							<label for="comment" class="sr-only">Your comment</label>

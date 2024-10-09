@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import entity.Article;
 import model.ArticleModel;
 import service.impl.ArticleServiceImpl;
 
@@ -33,7 +34,10 @@ public class ArticleServlet extends HttpServlet {
 				this.getServletContext().getRequestDispatcher("/views/article/error.jsp").forward(req, res);
 				return;
 			}
-			req.setAttribute("article", model.getArticle());
+			Article article = model.getArticle();
+			req.setAttribute("article", article);
+			req.setAttribute("user", article.getUser());
+			req.setAttribute("comments", article.getComments());
 			this.getServletContext().getRequestDispatcher("/views/article/detail.jsp").forward(req, res);
 		} else
 			this.getServletContext().getRequestDispatcher("/views/article/index.jsp").forward(req, res);

@@ -20,17 +20,17 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String first_name;
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
 
-	@Column(nullable = false)
-	private String second_name;
+	@Column(name = "second_name", nullable = false)
+	private String secondName;
 
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false)
-	private Date birth_date;
+	@Column(name = "birth_date", nullable = false)
+	private Date birthDate;
 
 	@Column(nullable = false)
 	private String password;
@@ -43,24 +43,24 @@ public class User {
 
 	}
 
-	public User(String first_name, String second_name, String email, String password, Date birthDate, UserRole role) {
-		this.first_name = first_name;
-		this.second_name = second_name;
+	public User(String firstName, String secondName, String email, String password, Date birthDate, UserRole role) {
+		this.firstName = firstName;
+		this.secondName = secondName;
 		this.email = email;
 		this.password = password;
-		this.birth_date = birthDate;
+		this.birthDate = birthDate;
 		this.role = role;
 
 	}
 
-	public User(Long id, String first_name, String second_name, String email, String password, Date birthDate,
+	public User(Long id, String firstName, String secondName, String email, String password, Date birthDate,
 			UserRole role) {
 		this.id = id;
-		this.first_name = first_name;
-		this.second_name = second_name;
+		this.firstName = firstName;
+		this.secondName = secondName;
 		this.email = email;
 		this.password = password;
-		this.birth_date = birthDate;
+		this.birthDate = birthDate;
 		this.role = role;
 	}
 
@@ -72,20 +72,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getSecond_name() {
-		return second_name;
+	public String getSecondName() {
+		return secondName;
 	}
 
-	public void setSecond_name(String second_name) {
-		this.second_name = second_name;
+	public void setSecond_name(String secondName) {
+		this.secondName = secondName;
 	}
 
 	public String getEmail() {
@@ -96,12 +96,12 @@ public class User {
 		this.email = email;
 	}
 
-	public Date getBirth_date() {
-		return birth_date;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setBirth_date(Date birth_date) {
-		this.birth_date = birth_date;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public UserRole getRole() {
