@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import entity.User;
@@ -52,7 +54,7 @@ public class AuthServlet extends HttpServlet {
     }
 
 
-  
+
 
 
     @Override
@@ -92,20 +94,16 @@ public class AuthServlet extends HttpServlet {
             logger.info("password  "+password);
             logger.info("role  "+role);
 
-            Date birth_date = null;
-            try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy"); 
-                birth_date = dateFormat.parse(birth_dateStr);
-            } catch (ParseException e) {
-                logger.error("Cant cast the birth date" ,e);
-            }
+            LocalDate birth_date = null;
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            birth_date = LocalDate.parse(birth_dateStr, dateFormat);
 
             User newUser = new User();
 
-            newUser.setFirst_name(first_name);
+            newUser.setFirstName(first_name);
             newUser.setSecond_name(second_name);
             newUser.setEmail(email);
-            newUser.setBirth_date(birth_date);
+            newUser.setBirthDate(birth_date);
             newUser.setPassword(password);
             newUser.setRole(UserRole.valueOf(role.toUpperCase()));
 
@@ -130,6 +128,7 @@ public class AuthServlet extends HttpServlet {
         String plainPassword = req.getParameter("password");
 
         UserModel userModel = new UserModel();
+        userModel.setError(email);
 
         if (this.userServiceImpl.userAlreadyExist(email)) {
             User user = userServiceImpl.getUserByEmail(email);
@@ -146,7 +145,7 @@ public class AuthServlet extends HttpServlet {
                 this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
             }
         } else {
-            userModel.setError("User not found");
+            userModel.setError("User not found, with email:" + email);
             req.setAttribute("model", userModel);
             this.getServletContext().getRequestDispatcher("/views/auth/login.jsp").forward(req, res);
         }

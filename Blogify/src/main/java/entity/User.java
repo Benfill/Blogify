@@ -1,6 +1,6 @@
 package entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +30,7 @@ public class User {
 	private String email;
 
 	@Column(name = "birth_date", nullable = false)
-	private Date birthDate;
+	private LocalDate birthDate;
 
 	@Column(nullable = false)
 	private String password;
@@ -43,7 +43,7 @@ public class User {
 
 	}
 
-	public User(String firstName, String secondName, String email, String password, Date birthDate, UserRole role) {
+	public User(String firstName, String secondName, String email, String password, LocalDate birthDate, UserRole role) {
 		this.firstName = firstName;
 		this.secondName = secondName;
 		this.email = email;
@@ -53,7 +53,7 @@ public class User {
 
 	}
 
-	public User(Long id, String firstName, String secondName, String email, String password, Date birthDate,
+	public User(Long id, String firstName, String secondName, String email, String password, LocalDate birthDate,
 			UserRole role) {
 		this.id = id;
 		this.firstName = firstName;
@@ -96,11 +96,11 @@ public class User {
 		this.email = email;
 	}
 
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 

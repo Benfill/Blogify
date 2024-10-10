@@ -3,7 +3,7 @@ package controller;
 import entity.User;
 import enums.UserRole;
 import repository.impl.UserRepositoryImpl;
-import service.IUserService;
+import service.UserService;
 import service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
-    private IUserService userService;
+    private UserService userService;
 
     public void init() throws ServletException {
         userService = new UserServiceImpl();

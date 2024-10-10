@@ -5,46 +5,47 @@ import repository.UserRepository;
 import repository.impl.UserRepositoryImpl;
 import service.UserService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
-	private EntityManagerFactory emf;
+
 	private UserRepositoryImpl userRepository;
 
-	public void UserService() {
-		emf = Persistence.createEntityManagerFactory("userPU");
-		EntityManager em = emf.createEntityManager();
-		userRepository = new UserRepositoryImpl(em);
+	public UserServiceImpl() {
+		userRepository = new UserRepositoryImpl();
 	}
 
+	@Override
 	public List<User> getAllUsers() {
 		return userRepository.getAllUsers();
 	}
 
-	public User getUserById(int id) {
+	@Override
+	public User getUserById(Long id) {
 		return userRepository.findUserById(id);
 	}
 
+	@Override
 	public User getUserByEmail(String email) {
-		return userRepository.findUserByEmail(email);
+		return userRepository.findUserByEmail(email).orElse(null);
 	}
 
+	@Override
 	public void createUser(User user) {
-//        User user = new User(name, email, password);
-		userRepository.addUser(user);
+		userRepository.updateUser(user);
 	}
 
+	@Override
 	public void updateUser(User u) {
 		User user = userRepository.findUserById(u.getId());
 		if (user != null) {
-			userRepository.updateUser(user);
+			userRepository.updateUser(u);
 		}
 	}
 
-	public void deleteUser(int id) {
+	@Override
+	public void deleteUser(Long id) {
 		User user = userRepository.findUserById(id);
 		if (user != null) {
 			userRepository.removeUser(id);
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Boolean userAlreadyExist(String email) {
-		Optional<User> optionalUser = this.userRepositoryImpl.findUserByEmail(email);
-
+		Optional<User> optionalUser = this.userRepository.findUserByEmail(email);
 		return optionalUser.isPresent();
 	}
+}

@@ -1,13 +1,14 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag import="entity.User" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 
 <%@ attribute name="title" required="true" %>
-<%
-    User loggedInUser = null;
-    if (session != null) {
-        loggedInUser = (User) session.getAttribute("loggedInUser");
-    }
-%>
+<%--<%--%>
+<%--    User loggedInUser = null;--%>
+<%--    if (session != null) {--%>
+<%--        loggedInUser = (User) session.getAttribute("loggedInUser");--%>
+<%--    }--%>
+<%--%>--%>
 
 <html>
 <head>
@@ -58,17 +59,26 @@
                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
                 </li>
                 <li>
-                    <% if (loggedInUser != null) { %>
-                    <div class="flex">
-                        <p class="text-white mr-4">Welcome, <%= loggedInUser.getFirst_name() %>!</p>
-                        <form action="<%= request.getContextPath() %>/auth?action=logout" method="post">
-                            <button type="submit" class="px-2 py-1 bg-red-600 text-white border hover:opacity-70">Logout</button>
-                        </form>
-                    </div>
-                    <% } else { %>
-                        <a class="text-blue-500" href="auth?action=login">Login</a>
-                        <a class="text-blue-500 ml-4 hover:underline" href="auth?action=register">Register</a>
-                    <% } %>
+                    <c:choose>
+                        <c:when test="${ not empty sessionScope.loggedInUser }">
+
+                            <div class="flex">
+                                <p class="text-white mr-4">Welcome, ${loggedInUser.getFirstName()}!</p>
+                                <form action="${pageContext.request.getContextPath()}/auth?action=logout" method="post">
+                                    <button type="submit"
+                                            class="px-2 py-1 bg-red-600 text-white border hover:opacity-70">Logout
+                                    </button>
+                                </form>
+                            </div>
+
+                        </c:when>
+
+                        <c:otherwise>
+                            <a class="text-blue-500" href="auth?action=login">Login</a>
+                            <a class="text-blue-500 ml-4 hover:underline" href="auth?action=register">Register</a>
+                        </c:otherwise>
+
+                    </c:choose>
 
                 </li>
             </ul>
