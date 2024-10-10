@@ -1,6 +1,6 @@
 package service.impl;
 
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -25,7 +25,8 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public List<Article> allArticles() {
-        return this.articleRepositoryImpl.getAllArticles();
+         List<Article> articles =this.articleRepositoryImpl.getAllArticles();
+         return articles;
     }
 
     @Override
@@ -47,10 +48,9 @@ public class ArticleServiceImpl implements IArticleService {
 	private ArticleRepositoryImpl articleRepo = new ArticleRepositoryImpl();
 
 	@Override
-	public ArticleModel getArticleById(String id) {
-		if (!id.matches("-?\\d+(\\.\\d+)?"))
-			return null;
-		Article article = articleRepo.readById(Long.parseLong(id));
+	public ArticleModel getArticleById(Long id) {
+		
+		Article article = articleRepo.readById(id);
 		ArticleModel articleModel = new ArticleModel();
 
 		if (article != null) {

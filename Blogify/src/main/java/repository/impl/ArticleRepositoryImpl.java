@@ -113,7 +113,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
   
     @Override
 	public Article readById(long id) {
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
 		String hql = "SELECT a FROM Article a LEFT JOIN FETCH a.comments c LEFT JOIN FETCH c.user "

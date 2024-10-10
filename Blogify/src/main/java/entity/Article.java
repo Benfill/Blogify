@@ -142,4 +142,8 @@ public class Article {
     public void setUserId(User user) {
         this.user = user;
     }
+
+    public List<Comment> getComments(){
+        return this.comments;
+    }
 }

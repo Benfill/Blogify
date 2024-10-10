@@ -10,4 +10,5 @@ public interface IArticleRepository {
     public List<Article> getAllArticles();
     public Optional<Article> getArticleById(Long id);
     public Boolean updateArticle(Article article);
+    public Article readById(long id);
 }

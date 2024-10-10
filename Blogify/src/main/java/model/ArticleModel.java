@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import entity.Article;
+import entity.Comment;
 import entity.User;
 
 public class ArticleModel {
@@ -14,6 +15,26 @@ public class ArticleModel {
     private String success;
     private List<Article> articles;
     private Article article;
+    private String successMessage;
+    private String erroMessage;
+
+    public String getErrorMessage(){
+        return this.erroMessage;
+    }
+
+    public String getSuccesMessage(){
+        return this.success;
+    }
+
+    public void setSuccessMessage(String successMessage){
+        this.successMessage = successMessage;
+    }
+
+
+    public void setErroMessage(String erroMessage){
+        this.erroMessage = erroMessage;
+    }
+
 
 
 
@@ -56,5 +77,14 @@ public class ArticleModel {
 
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
+    }
+
+    public User getUser(){
+        return this.article.getUserId();
+    }
+
+
+    public List<Comment> getComments(){
+        return this.article.getComments();
     }
 }

@@ -47,16 +47,7 @@ public class ArticleServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        
-
-		// this.getServletContext().getRequestDispatcher("/views/article/index.jsp").forward(req, res);
-
            String action = req.getParameter("action");
-           
-
-
-        //    ArticleModel model = this.articleServiceImpl.getArticleById(path);
-
 
             if (action == null || action.isEmpty()) {
                 index(req, res);
@@ -67,6 +58,8 @@ public class ArticleServlet extends HttpServlet {
             } else if ("edit".equalsIgnoreCase(action)) {
                 edit(req,res);
             }else if("detail".equalsIgnoreCase(action)){
+		// this.getServletContext().getRequestDispatcher("/views/article/index.jsp").forward(req, res);
+                
                detail(req,res);
             }
     }
@@ -125,13 +118,13 @@ public class ArticleServlet extends HttpServlet {
 
     protected void detail(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String id = req.getParameter("id");
-        ArticleModel model = new ArticleModel();
+        logger.info("Id : "+id);
                 
         if(id!=null){
             Long articleId = Long.parseLong(id);
-            Article article = this.articleServiceImpl.readById(articleId);
+            ArticleModel article = this.articleServiceImpl.getArticleById(articleId);
             if(article!=null){
-                req.setAttribute("article", article);
+                req.setAttribute("article", article.getArticle());
                 req.setAttribute("user", article.getUser());
                 req.setAttribute("comments", article.getComments());
                 this.getServletContext().getRequestDispatcher("/views/article/detail.jsp").forward(req, res);
@@ -225,7 +218,7 @@ public class ArticleServlet extends HttpServlet {
     
                 User user = new User();
                 user.setId(1L); 
-                newArticle.setUser(user);
+                newArticle.setUserId(user);
     
                 // Insert the article
                 Boolean inserted = this.articleServiceImpl.addNewArticle(newArticle);

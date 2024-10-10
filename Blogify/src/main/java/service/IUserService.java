@@ -1,6 +1,7 @@
 package service;
 
 import entity.User;
+import java.util.*;
 
 public interface IUserService {
      User findUserById(Long id);
