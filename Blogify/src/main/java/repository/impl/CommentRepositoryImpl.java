@@ -2,6 +2,7 @@ package repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import entity.Comment;
+import enums.CommentStatus;
 import repository.ICommentRepository;
 
 public class CommentRepositoryImpl implements ICommentRepository {
@@ -29,7 +31,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
 		} catch (Exception e) {
 			// Log the error
 			e.printStackTrace();
-			return new ArrayList<>(); // Return an empty list instead of null
+			return new ArrayList<>();
 		}
 	}
 
@@ -71,8 +73,45 @@ public class CommentRepositoryImpl implements ICommentRepository {
 	}
 
 	@Override
-	public void changeStatus(Comment comment) {
-		// TODO Auto-generated method stub
+	public void changeStatus(int commentId, String newStatus) throws Exception {
+		Session session = null;
+		Transaction transaction = null;
 
+		try {
+			session = sessionFactory.openSession();
+			transaction = session.beginTransaction();
+
+			Comment comment = session.get(Comment.class, commentId);
+			if (comment != null) {
+				comment.setCommentStatus(CommentStatus.valueOf(newStatus));
+				session.update(comment);
+			}
+
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("Error updating comment status", e);
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
+
+	@Override
+	public Optional<Comment> readById(int id) {
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Query<Comment> query = session.createQuery("FROM Comment WHERE id = :id", Comment.class);
+			query.setParameter("id", id);
+			return query.uniqueResultOptional();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Optional.empty();
+		}
+	}
+
 }

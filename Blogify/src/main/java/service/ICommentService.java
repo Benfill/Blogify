@@ -14,4 +14,6 @@ public interface ICommentService {
 
 	void delete(Comment comment);
 
+	void approveOrDenieComment(String id, String status) throws Exception;
+
 }

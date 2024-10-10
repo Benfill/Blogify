@@ -3,6 +3,7 @@ package service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,25 @@ public class CommentServiceImpl implements ICommentService {
 	public void delete(Comment comment) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void approveOrDenieComment(String idParam, String status) throws Exception {
+		int id;
+		if (idParam == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0))
+			throw new Exception("The id Param is null or not a valid number");
+
+		if (status == null)
+			throw new Exception("The status Param is null");
+
+		id = Integer.parseInt(idParam);
+		Optional<Comment> cOptional = commentRepo.readById(id);
+
+		if (!cOptional.isPresent())
+			throw new Exception("Comment not found");
+
+		Comment comment = cOptional.get();
+		commentRepo.changeStatus(comment.getId(), status);
 	}
 
 }

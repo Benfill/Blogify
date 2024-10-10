@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import entity.Comment;
 
@@ -14,6 +15,8 @@ public interface ICommentRepository {
 
 	void delete(Comment comment);
 
-	void changeStatus(Comment comment);
+	void changeStatus(int commentId, String newStatus) throws Exception;
+
+	Optional<Comment> readById(int id);
 
 }

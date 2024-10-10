@@ -70,9 +70,25 @@ public class CommentServlet extends HttpServlet {
 		case "delete":
 			break;
 		case "status/update":
-		default:
+			updateStatus(req, resp);
 			break;
 		}
+
+	}
+
+	private void updateStatus(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("comment_id");
+		String status = req.getParameter("status");
+
+		try {
+			commentService.approveOrDenieComment(idParam, status);
+			req.setAttribute("successMessage", "Comment Status Changed Successfully");
+		} catch (Exception e) {
+			log.warning("error: " + e.getMessage());
+			req.setAttribute("errorMessage", "error: " + e.getMessage());
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/comment");
 
 	}
 
