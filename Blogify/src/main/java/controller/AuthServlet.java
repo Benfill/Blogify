@@ -94,16 +94,15 @@ public class AuthServlet extends HttpServlet {
             logger.info("password  "+password);
             logger.info("role  "+role);
 
-            LocalDate birth_date = null;
-            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            birth_date = LocalDate.parse(birth_dateStr, dateFormat);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate birthDate = LocalDate.parse(birth_dateStr, formatter);
 
             User newUser = new User();
 
             newUser.setFirstName(first_name);
             newUser.setSecond_name(second_name);
             newUser.setEmail(email);
-            newUser.setBirthDate(birth_date);
+            newUser.setBirthDate(birthDate);
             newUser.setPassword(password);
             newUser.setRole(UserRole.valueOf(role.toUpperCase()));
 
