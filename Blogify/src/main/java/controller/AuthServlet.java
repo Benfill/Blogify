@@ -87,23 +87,20 @@ public class AuthServlet extends HttpServlet {
 			logger.info("role  " + role);
 
 			LocalDate birth_date = null;
-			// Force the date format to English
-			DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
-
-			try {
-				birth_date = LocalDate.parse(birth_dateStr, dateFormat);
-			} catch (DateTimeParseException e) {
-				model.setError("Invalid date format. Please use dd-MMM-yyyy.");
-				req.setAttribute("model", model);
-				this.getServletContext().getRequestDispatcher("/views/auth/register.jsp").forward(req, res);
-				return; // Stop processing if the date is invalid
+			DateTimeFormatter formatter = null;
+			if (birth_dateStr.equals("dd-MMM-yyyy")) {
+				formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
+			} else {
+				formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			}
+
+			LocalDate birthDate = LocalDate.parse(birth_dateStr, formatter);
 
 			User newUser = new User();
 			newUser.setFirstName(first_name);
 			newUser.setSecond_name(second_name);
 			newUser.setEmail(email);
-			newUser.setBirthDate(birth_date);
+			newUser.setBirthDate(birthDate);
 			newUser.setPassword(password);
 			newUser.setRole(UserRole.valueOf(role.toUpperCase()));
 
