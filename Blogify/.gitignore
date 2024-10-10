@@ -4,6 +4,9 @@
 /.project
 /.classpath
 
+# vs code
+./vscode
+
 # Build directories (Eclipse, Maven, or Gradle)
 bin/
 target/

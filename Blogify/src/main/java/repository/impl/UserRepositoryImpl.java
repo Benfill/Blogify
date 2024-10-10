@@ -14,6 +14,7 @@ import utils.HibernateUtil;
 
 public class UserRepositoryImpl implements UserRepository {
 
+
     private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
     @Override

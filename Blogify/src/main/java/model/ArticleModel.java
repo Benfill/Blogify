@@ -1,44 +1,60 @@
 package model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import entity.Article;
+import entity.User;
 
 public class ArticleModel {
-	private List<Article> articles;
-	private Article article;
-	private String erroMessage;
-	private String successMessage;
+    private User connectedUser;
+    private String error;
+    private  Map<String, String> errors = new HashMap<>();
+    private String success;
+    private List<Article> articles;
+    private Article article;
 
-	public List<Article> getArticles() {
-		return articles;
-	}
 
-	public void setArticles(List<Article> articles) {
-		this.articles = articles;
-	}
 
-	public Article getArticle() {
-		return article;
-	}
+    public Article getArticle(){
+        return this.article;
+    }
 
-	public void setArticle(Article article) {
-		this.article = article;
-	}
+    public void setArticle(Article article){
+        this.article = article;
+    }
+    public String getError() {
+        return error;
+    }
 
-	public String getErroMessage() {
-		return erroMessage;
-	}
 
-	public void setErroMessage(String erroMessage) {
-		this.erroMessage = erroMessage;
-	}
+    public void setError(String error) {
+        this.error = error;
+    }
 
-	public String getSuccessMessage() {
-		return successMessage;
-	}
+    public String getSuccess() {
+        return success;
+    }
 
-	public void setSuccessMessage(String successMessage) {
-		this.successMessage = successMessage;
-	}
+    public void setSuccess(String success) {
+        this.success = success;
+    }
+
+
+    public List<Article> allArticles(){
+        return this.articles;
+    }
+
+    public void setArticles(List<Article> articles){
+        this.articles = articles;
+    }
+
+    public Map<String, String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Map<String, String> errors) {
+        this.errors = errors;
+    }
 }

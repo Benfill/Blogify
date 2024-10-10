@@ -1,8 +1,4 @@
-package service.impl;
 
-import entity.User;
-import repository.UserRepository;
-import repository.impl.UserRepositoryImpl;
 import service.UserService;
 
 import java.util.List;
@@ -57,4 +53,5 @@ public class UserServiceImpl implements UserService {
 		Optional<User> optionalUser = this.userRepository.findUserByEmail(email);
 		return optionalUser.isPresent();
 	}
+
 }

@@ -1,12 +1,14 @@
 package service.impl;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import entity.User;
 import repository.impl.AuthRepositoryImpl;
+import repository.impl.UserRepositoryImpl;
 import service.IAuthService;
 
 public class AuthServiceImpl implements IAuthService {
@@ -14,11 +16,13 @@ public class AuthServiceImpl implements IAuthService {
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final AuthRepositoryImpl authRepositoryImpl = new AuthRepositoryImpl();
+    private final UserRepositoryImpl userRepositoryImpl = new UserRepositoryImpl();
+
 
     @Override
-    public User login(String email, String password) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    public Optional<User> login(String email) {
+       return this.userRepositoryImpl.findUserByEmail(email);
+       
     }
 
     @Override
@@ -33,5 +37,6 @@ public class AuthServiceImpl implements IAuthService {
     
         return inserted;
     }
+
     
 }
