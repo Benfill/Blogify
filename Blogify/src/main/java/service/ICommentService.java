@@ -4,11 +4,11 @@ import java.util.List;
 
 import entity.Comment;
 
-public interface CommentService {
+public interface ICommentService {
 
 	List<Comment> getAll();
 
-	void post();
+	void post(String content, String articlId, int userId) throws Exception;
 
 	void update(Comment comment);
 
