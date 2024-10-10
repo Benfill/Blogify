@@ -43,7 +43,7 @@ public class CommentServiceImpl implements ICommentService {
 		if (content == null || content.trim().isEmpty() || articleId == null || userId <= 0)
 			throw new Exception("Invalid input parameters");
 
-		User user = new UserServiceImpl().getUserById(userId);
+        User user = new UserServiceImpl().getUserById((long) userId);
 		ArticleModel article = new ArticleServiceImpl().getArticleById(articleId);
 		Comment comment = new Comment(content, LocalDate.now(), article.getArticle(), user);
 

@@ -1,10 +1,8 @@
 package entity;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,123 +13,133 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import javax.persistence.CascadeType;
+
+import java.util.*;
 
 import enums.ArticleStatus;
+
 
 @Entity
 @Table(name = "articles")
 public class Article {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String title;
-	private String content;
-	private LocalDateTime creationDate;
-	private LocalDateTime publishedDateTime;
+     @NotEmpty(message = "Title is required.")
+    @Size(max = 255, message = "Title cannot exceed 255 characters.")
+    @Column(name = "title")
+    private String title;
 
-	@Enumerated(EnumType.STRING)
-	private ArticleStatus status;
 
-	@ManyToOne
+    @NotEmpty(message = "Content is required.")
+    @Size(max = 1000, message = "Content cannot exceed 1000 characters.")
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "articlePictureUrl")
+    private String articlePictureUrl;
+
+    @Column(name = "creationDate", nullable = false, columnDefinition = "TIMESTAMP")
+    private LocalDateTime creationDate;
+
+    @Column(name = "publishedDateTime")
+    private LocalDateTime publishedDateTime;
+
+    @Column(name = "status")
+    private String status;
+
+   
+
+    // @Column(name = "user_id")
+    // private Long userId;
+    @ManyToOne
 	private User user;
 
-	private String articlePictureUrl;
 
-	@OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Comment> comments;
 
-	public Article() {
-		this.creationDate = LocalDateTime.now();
-	}
+    public Article() {
+        this.creationDate = LocalDateTime.now();
+    }
 
-	public Article(String title, String content, LocalDateTime publishedDateTime, ArticleStatus status, User user,
-			String articlePictureUrl) {
-		this.title = title;
-		this.content = content;
-		this.creationDate = LocalDateTime.now();
-		this.publishedDateTime = publishedDateTime;
-		this.status = status;
-		this.user = user;
-		this.articlePictureUrl = articlePictureUrl;
-	}
+    public Article(String articlePictureUrl, String content, LocalDateTime creationDate, LocalDateTime publishedDateTime, String status, String title, User user) {
+        this.articlePictureUrl = articlePictureUrl;
+        this.content = content;
+        this.creationDate = LocalDateTime.now();
+        this.publishedDateTime = publishedDateTime;
+        this.status = status;
+        this.title = title;
+        this.user = user;
 
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getTitle() {
-		return title;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getArticlePictureUrl() {
+        return articlePictureUrl;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setArticlePictureUrl(String articlePictureUrl) {
+        this.articlePictureUrl = articlePictureUrl;
+    }
 
-	public LocalDateTime getCreationDate() {
-		return creationDate;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setCreationDate(LocalDateTime creationDate) {
-		this.creationDate = creationDate;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public LocalDateTime getPublishedDateTime() {
-		return publishedDateTime;
-	}
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
 
-	public void setPublishedDateTime(LocalDateTime publishedDateTime) {
-		this.publishedDateTime = publishedDateTime;
-	}
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	public ArticleStatus getStatus() {
-		return status;
-	}
+    public LocalDateTime getPublishedDateTime() {
+        return publishedDateTime;
+    }
 
-	public void setStatus(ArticleStatus status) {
-		this.status = status;
-	}
+    public void setPublishedDateTime(LocalDateTime publishedDateTime) {
+        this.publishedDateTime = publishedDateTime;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public List<Comment> getComments() {
-		return comments;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getArticlePictureUrl() {
-		return articlePictureUrl;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setArticlePictureUrl(String articlePictureUrl) {
-		this.articlePictureUrl = articlePictureUrl;
-	}
+    public User getUserId() {
+        return this.user;
+    }
 
-	public String getFormattedCreationDate() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return this.creationDate.format(formatter);
-	}
-
-	public String getFormattedPublishedDate() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return this.publishedDateTime.format(formatter);
-	}
-
+    public void setUserId(User user) {
+        this.user = user;
+    }
 }

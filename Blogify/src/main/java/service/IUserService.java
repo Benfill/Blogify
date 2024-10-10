@@ -1,6 +1,12 @@
 package service;
 
+import entity.User;
+
 public interface IUserService {
-    public Boolean userAlreadyExist(String email);
+     User findUserById(Long id);
+     List<User> getAllUsers();
+     void updateUser(User user);
+     void removeUser(Long id);
+     Optional<User> findUserByEmail(String email);
     
 }
