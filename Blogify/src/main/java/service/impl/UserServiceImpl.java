@@ -1,8 +1,4 @@
-package service.impl;
 
-import entity.User;
-import repository.UserRepository;
-import repository.impl.UserRepositoryImpl;
 import service.UserService;
 
 import javax.persistence.EntityManager;
@@ -57,3 +53,5 @@ public class UserServiceImpl implements UserService {
 
 		return optionalUser.isPresent();
 	}
+  
+}

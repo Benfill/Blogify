@@ -1,5 +1,6 @@
 package enums;
 
 public enum ArticleStatus {
-	DRAFT, PUBLISHED
+    PUBLISHED,
+    DRAFT
 }

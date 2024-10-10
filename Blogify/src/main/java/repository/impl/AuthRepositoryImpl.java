@@ -15,12 +15,11 @@ public class AuthRepositoryImpl implements IAuthRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthRepositoryImpl.class);
 
-    @Override
-    public User login(String email, String password) throws SQLException {
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
-        
+    // @Override
+    // public User validateUser(String email, String password) throws SQLException {
+       
 
-    }
+    // }
 
     @Override
     public User register(User user) throws SQLException {

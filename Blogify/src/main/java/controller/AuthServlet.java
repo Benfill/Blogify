@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import entity.User;
 import model.UserModel;
@@ -61,7 +62,7 @@ public class AuthServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("login".equals(action)) {
-          
+          login(req,res);
 
 
         } else if ("register".equals(action)) {
@@ -139,4 +140,8 @@ public class AuthServlet extends HttpServlet {
       
     }
     
+
+    protected void login(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        
+    }
 }
