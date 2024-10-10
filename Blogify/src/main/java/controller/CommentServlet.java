@@ -87,7 +87,7 @@ public class CommentServlet extends HttpServlet {
 				"Received request - Content: " + content + ", ArticleId: " + articleId + ", UserId: " + userId);
 
 		if (userId == null) {
-			System.err.println("User not logged in"); // Add this line for debugging
+			System.err.println("User not logged in");
 			resp.sendRedirect(req.getContextPath() + "/login");
 			return;
 		}
