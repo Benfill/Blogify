@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entity.Comment;
+import entity.User;
 import service.impl.CommentServiceImpl;
 
 public class CommentServlet extends HttpServlet {
@@ -29,6 +30,15 @@ public class CommentServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		HttpSession session = req.getSession();
+
+		User user = (User) session.getAttribute("loggedInUser");
+
+		if (user == null || user.getRole() == null || !user.getRole().toString().equals("ADMIN")) {
+			resp.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		String action = req.getPathInfo();
 		String filter = "all";
