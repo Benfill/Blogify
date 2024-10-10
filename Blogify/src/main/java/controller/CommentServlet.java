@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entity.Comment;
 import service.impl.CommentServiceImpl;
 
 public class CommentServlet extends HttpServlet {
@@ -27,10 +29,29 @@ public class CommentServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		String action = req.getPathInfo();
-		if (action != null)
+		String filter = "all";
+		String pageParam = req.getParameter("page");
+		int page = 1;
+
+		if (pageParam != null && (pageParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(pageParam) > 0))
+			page = Integer.parseInt(pageParam);
+
+		if (action != null) {
 			action = action.substring(1, action.length());
-		resp.getWriter().println(action);
+			if (action.equals("approved"))
+				filter = "approved";
+			else if (action.equals("denied"))
+				filter = "denied";
+
+		}
+
+		List<Comment> comments = commentService.getAll(page, filter);
+
+		req.setAttribute("comments", comments);
+
+		req.getRequestDispatcher("/views/comment/index.jsp").forward(req, resp);
 
 	}
 
@@ -45,13 +66,74 @@ public class CommentServlet extends HttpServlet {
 			store(req, resp);
 			break;
 		case "update":
+			update(req, resp);
 			break;
 		case "delete":
+			delete(req, resp);
 			break;
 		case "status/update":
-		default:
+			updateStatus(req, resp);
 			break;
 		}
+
+	}
+
+	private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("comment_id");
+		String content = req.getParameter("content");
+		String articleId = req.getParameter("article_id");
+
+		try {
+			commentService.update(idParam, content);
+			req.setAttribute("successMessage", "Comment updated successfully");
+
+		} catch (Exception e) {
+			req.setAttribute("errorMessage", "error: " + e.getMessage());
+		}
+
+		if (articleId == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
+
+	}
+
+	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("comment_id");
+		String articleId = req.getParameter("article_id");
+
+		try {
+			commentService.delete(idParam);
+			req.setAttribute("successMessage", "Comment deleted successfully");
+
+		} catch (Exception e) {
+			req.setAttribute("errorMessage", "error: " + e.getMessage());
+		}
+
+		if (articleId == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
+
+	}
+
+	private void updateStatus(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("comment_id");
+		String status = req.getParameter("status");
+
+		try {
+			commentService.approveOrDenieComment(idParam, status);
+			req.setAttribute("successMessage", "Comment Status Changed Successfully");
+		} catch (Exception e) {
+			log.warning("error: " + e.getMessage());
+			req.setAttribute("errorMessage", "error: " + e.getMessage());
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/comment");
 
 	}
 
@@ -66,7 +148,7 @@ public class CommentServlet extends HttpServlet {
 				"Received request - Content: " + content + ", ArticleId: " + articleId + ", UserId: " + userId);
 
 		if (userId == null) {
-			System.err.println("User not logged in"); // Add this line for debugging
+			System.err.println("User not logged in");
 			resp.sendRedirect(req.getContextPath() + "/login");
 			return;
 		}

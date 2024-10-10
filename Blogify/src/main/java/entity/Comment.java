@@ -113,4 +113,8 @@ public class Comment {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return this.creationDate.format(formatter);
 	}
+
+	public String getStatus() {
+		return commentStatus.toString();
+	}
 }
