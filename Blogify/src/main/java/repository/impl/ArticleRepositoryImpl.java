@@ -1,6 +1,7 @@
 package repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -60,5 +61,55 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
         return articles;
     }
+
+    @Override
+    public Optional<Article> getArticleById(Long id) {
+        Transaction transaction = null;
+        Article article = null;
+        
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            article = session.get(Article.class, id); 
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error("Error fetching article by ID", e);
+        }
+        
+        return Optional.ofNullable(article);
+    }
+
+    @Override
+    public Boolean updateArticle(Article article) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+    
+            Article existingArticle = session.get(Article.class, article.getId());
+            
+            if (existingArticle != null) {
+                existingArticle.setTitle(article.getTitle());
+                existingArticle.setContent(article.getContent());
+                existingArticle.setStatus(article.getStatus());
+                existingArticle.setPublishedDateTime(article.getPublishedDateTime());
+    
+                session.update(existingArticle);
+                transaction.commit();
+                return true;
+            } else {
+                logger.warn("Article not found for ID: " + article.getId());
+                return false; 
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); 
+            }
+            logger.error("Error updating article", e);
+            return false; 
+        }
+    }
+    
     
 }
