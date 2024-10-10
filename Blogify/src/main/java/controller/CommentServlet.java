@@ -66,13 +66,58 @@ public class CommentServlet extends HttpServlet {
 			store(req, resp);
 			break;
 		case "update":
+			update(req, resp);
 			break;
 		case "delete":
+			delete(req, resp);
 			break;
 		case "status/update":
 			updateStatus(req, resp);
 			break;
 		}
+
+	}
+
+	private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("comment_id");
+		String content = req.getParameter("content");
+		String articleId = req.getParameter("article_id");
+
+		try {
+			commentService.update(idParam, content);
+			req.setAttribute("successMessage", "Comment updated successfully");
+
+		} catch (Exception e) {
+			req.setAttribute("errorMessage", "error: " + e.getMessage());
+		}
+
+		if (articleId == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
+
+	}
+
+	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("comment_id");
+		String articleId = req.getParameter("article_id");
+
+		try {
+			commentService.delete(idParam);
+			req.setAttribute("successMessage", "Comment deleted successfully");
+
+		} catch (Exception e) {
+			req.setAttribute("errorMessage", "error: " + e.getMessage());
+		}
+
+		if (articleId == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
 
 	}
 

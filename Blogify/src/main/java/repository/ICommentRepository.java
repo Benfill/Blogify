@@ -11,9 +11,9 @@ public interface ICommentRepository {
 
 	void insert(Comment comment) throws Exception;
 
-	void update(Comment comment);
+	void update(Comment comment, String content) throws Exception;
 
-	void delete(Comment comment);
+	void delete(Comment comment) throws Exception;
 
 	void changeStatus(int commentId, String newStatus) throws Exception;
 

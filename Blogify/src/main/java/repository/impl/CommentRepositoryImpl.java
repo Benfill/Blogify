@@ -61,15 +61,53 @@ public class CommentRepositoryImpl implements ICommentRepository {
 	}
 
 	@Override
-	public void update(Comment comment) {
-		// TODO Auto-generated method stub
+	public void update(Comment commentObj, String content) throws Exception {
+		Session session = null;
+		Transaction transaction = null;
+
+		try {
+			session = sessionFactory.openSession();
+			transaction = session.beginTransaction();
+
+			Comment comment = session.get(Comment.class, commentObj.getId());
+			if (comment != null) {
+				comment.setContent(content);
+				session.update(comment);
+			}
+
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("Error updating comment status", e);
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 
 	}
 
 	@Override
-	public void delete(Comment comment) {
-		// TODO Auto-generated method stub
+	public void delete(Comment comment) throws Exception {
+		Transaction transaction = null;
+		try (Session session = sessionFactory.openSession()) {
+			transaction = session.beginTransaction();
 
+			Comment entity = session.get(Comment.class, comment.getId());
+
+			if (entity != null) {
+				session.delete(entity);
+			}
+
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("error: " + e.getMessage());
+		}
 	}
 
 	@Override

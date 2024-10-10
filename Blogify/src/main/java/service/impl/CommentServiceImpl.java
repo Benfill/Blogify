@@ -53,14 +53,39 @@ public class CommentServiceImpl implements ICommentService {
 	}
 
 	@Override
-	public void update(Comment comment) {
-		// TODO Auto-generated method stub
+	public void update(String idParam, String content) throws Exception {
+		if (idParam == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0))
+			throw new Exception("The id Param is null or not a valid number");
+		if (content == null || content.isEmpty())
+			throw new Exception("The status Param is null or empty");
 
+		int id = Integer.parseInt(idParam);
+
+		Optional<Comment> cOptional = commentRepo.readById(id);
+
+		if (!cOptional.isPresent())
+			throw new Exception("the comment not found");
+
+		Comment comment = cOptional.get();
+
+		commentRepo.update(comment, content);
 	}
 
 	@Override
-	public void delete(Comment comment) {
-		// TODO Auto-generated method stub
+	public void delete(String idParam) throws Exception {
+		if (idParam == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0))
+			throw new Exception("The id Param is null or not a valid number");
+
+		int id = Integer.parseInt(idParam);
+
+		Optional<Comment> cOptional = commentRepo.readById(id);
+
+		if (!cOptional.isPresent())
+			throw new Exception("the comment not found");
+
+		Comment comment = cOptional.get();
+
+		commentRepo.delete(comment);
 
 	}
 
