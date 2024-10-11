@@ -6,6 +6,19 @@
 
 <dashboard:dashboard>
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+                <div id="msgs">
+                    <c:if test="${not empty param.success}">
+                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                            <span class="font-medium">Success:</span> ${param.success}
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty param.error}">
+                        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">Error:</span> ${param.error}
+                        </div>
+                    </c:if>
+                </div>
+
                 <div class="container px-6 py-8 mx-auto">
                     <h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>
 
@@ -126,4 +139,18 @@
                     </div>
                 </div>
             </main>
+    <script>
+        function cleanUrl() {
+            history.replaceState(null, '', window.location.pathname);
+            let msgs = document.getElementById("msgs");
+            if (msgs) {
+                msgs.className = "hidden";
+            }
+        }
+
+        window.onload = function() {
+            setTimeout(cleanUrl, 3000); // 3000 milliseconds = 3 seconds
+        };
+    </script>
+
 </dashboard:dashboard>
