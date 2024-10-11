@@ -41,7 +41,8 @@
 	</servlet-mapping>
 	<!-- Comment mapping -->
 	
-	<welcome-file-list>
-		<welcome-file>views/article/index.jsp</welcome-file>
-	</welcome-file-list>
+	<servlet-mapping>
+		<servlet-name>ArticleServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 </web-app>
