@@ -1,7 +1,12 @@
+<%@ tag import="entity.User" %>
+<%
+    User loggedInUser = null;
+    if (session != null) {
+        loggedInUser = (User) session.getAttribute("loggedInUser");
+    }
+%>
 <html>
 <head>
-
-
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet"/>
@@ -58,18 +63,6 @@
 
                     <span class="mx-3">Create User</span>
                 </a>
-                <c:if test="${not empty userModel}">
-                    <c:if test="${not empty userModel.error}">
-                        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                            <span class="font-medium">Error !</span> ${userModel.error}
-                        </div>
-                    </c:if>
-                    <c:if test="${not empty userModel.success}">
-                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                            <span class="font-medium">Success</span> ${userModel.success}
-                        </div>
-                    </c:if>
-                </c:if>
             </nav>
         </div>
         <div class="flex flex-col flex-1 overflow-hidden">

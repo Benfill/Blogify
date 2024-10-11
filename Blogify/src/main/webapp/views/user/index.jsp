@@ -4,16 +4,7 @@
 <%@ page import="entity.User" %>
 <%@ taglib prefix="dashboard" tagdir="/WEB-INF/tags" %>
 
-<%
-    User loggedInUser = null;
-    if (session != null) {
-        loggedInUser = (User) session.getAttribute("loggedInUser");
-    }
-%>
 <dashboard:dashboard>
-
-
-
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                 <div class="container px-6 py-8 mx-auto">
                     <h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>

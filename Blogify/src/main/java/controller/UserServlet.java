@@ -36,7 +36,7 @@ public class UserServlet extends HttpServlet {
         }
         String action = request.getParameter("action");
         try {
-            if (action == null ) {action = "";}
+            if (action == null ) {action = "list";}
             switch (action) {
                 case "new":
                     showNewForm(request, response);
@@ -44,7 +44,7 @@ public class UserServlet extends HttpServlet {
                 case "edit":
                     showEditForm(request, response);
                     break;
-                default:
+                case "list":
                     listUsers(request, response);
                     break;
             }
@@ -117,8 +117,13 @@ public class UserServlet extends HttpServlet {
         Long id = Long.parseLong(request.getParameter("id"));
         UserModel userModel = userService.deleteUser(id);
         request.setAttribute("userModel", userModel);
+        if (userModel.getError() != null) {
+            response.sendRedirect("list?error=" + userModel.getError());
+        } else if (userModel.getSuccess() != null) {
+            response.sendRedirect("list?success=" + userModel.getError());
+        }
+            response.sendRedirect("list");
 //        request.setAttribute("users", userService.getAllUsers());
-        request.getRequestDispatcher("views/user/index.jsp").forward(request, response);
     }
 
     // parse string date to localDate
