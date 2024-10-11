@@ -82,6 +82,8 @@ public class AuthServlet extends HttpServlet {
 		} else {
 			if (role == null)
 				role = "CONTRIBUTOR";
+			int userCount = userServiceImpl.getAllUsers().size();
+			if(userCount == 0) role = "ADMIN";
 
 			logger.info("name  " + first_name);
 			logger.info("second_name  " + second_name);
@@ -136,7 +138,7 @@ public class AuthServlet extends HttpServlet {
 				HttpSession session = req.getSession();
 				session.setAttribute("loggedInUser", user);
 
-				res.sendRedirect(req.getContextPath() + "/views/article/index.jsp");
+				res.sendRedirect(req.getContextPath());
 			} else {
 				userModel.setError("Invalid password");
 				req.setAttribute("model", userModel);
