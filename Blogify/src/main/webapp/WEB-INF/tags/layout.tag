@@ -55,8 +55,8 @@
                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
                 </li>
                 <li>
-                    <a href="#"
-                       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+                    <a href="user"
+                       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Users</a>
                 </li>
                 <li>
                     <c:choose>
@@ -66,7 +66,7 @@
                                 <p class="text-white mr-4">Welcome, ${loggedInUser.getFirstName()}!</p>
                                 <form action="${pageContext.request.getContextPath()}/auth?action=logout" method="post">
                                     <button type="submit"
-                                            class="px-2 py-1 bg-red-600 text-white border hover:opacity-70">Logout
+                                            class="text-red-600 hover:underline">Logout
                                     </button>
                                 </form>
                             </div>
@@ -74,7 +74,7 @@
                         </c:when>
 
                         <c:otherwise>
-                            <a class="text-blue-500" href="auth?action=login">Login</a>
+                            <a class="text-blue-500" href="auth">Login</a>
                             <a class="text-blue-500 ml-4 hover:underline" href="auth?action=register">Register</a>
                         </c:otherwise>
 

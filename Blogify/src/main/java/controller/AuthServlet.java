@@ -83,7 +83,7 @@ public class AuthServlet extends HttpServlet {
 			if (role == null)
 				role = "CONTRIBUTOR";
 			int userCount = userServiceImpl.getAllUsers().size();
-			if(userCount == 0) role = "ADMIN";
+			if (userCount == 0) role = "ADMIN";
 
 			logger.info("name  " + first_name);
 			logger.info("second_name  " + second_name);
