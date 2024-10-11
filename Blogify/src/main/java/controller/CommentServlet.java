@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entity.Comment;
+import entity.User;
 import service.impl.CommentServiceImpl;
 
 public class CommentServlet extends HttpServlet {
@@ -29,6 +30,15 @@ public class CommentServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		HttpSession session = req.getSession();
+
+		User user = (User) session.getAttribute("loggedInUser");
+
+		if (user == null || user.getRole() == null || !user.getRole().toString().equals("ADMIN")) {
+			resp.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		String action = req.getPathInfo();
 		String filter = "all";
@@ -82,6 +92,24 @@ public class CommentServlet extends HttpServlet {
 		String idParam = req.getParameter("comment_id");
 		String content = req.getParameter("content");
 		String articleId = req.getParameter("article_id");
+		String userId = req.getParameter("user_id");
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loggedInUser");
+
+		if (articleId == null || (!articleId.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(articleId) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		if (userId == null || (!userId.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(userId) > 0)) {
+			resp.sendRedirect(req.getContextPath() + "/article?action=detail&id=" + articleId);
+			return;
+		}
+
+		if (user == null || user.getId() == null || user.getId() != Long.parseLong(userId)) {
+			resp.sendRedirect(req.getContextPath() + "/article?action=detail&id=" + articleId);
+			return;
+		}
 
 		try {
 			commentService.update(idParam, content);
@@ -96,13 +124,31 @@ public class CommentServlet extends HttpServlet {
 			return;
 		}
 
-		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
+		resp.sendRedirect(req.getContextPath() + "/article?action=detail&id=" + articleId);
 
 	}
 
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String idParam = req.getParameter("comment_id");
 		String articleId = req.getParameter("article_id");
+		String userId = req.getParameter("user_id");
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loggedInUser");
+
+		if (articleId == null || (!articleId.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(articleId) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		if (userId == null || (!userId.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(userId) > 0)) {
+			req.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+
+		if (user == null || user.getId() == null || user.getId() != Long.parseLong(userId)) {
+			resp.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		try {
 			commentService.delete(idParam);
@@ -112,18 +158,26 @@ public class CommentServlet extends HttpServlet {
 			req.setAttribute("errorMessage", "error: " + e.getMessage());
 		}
 
-		if (articleId == null || (!idParam.matches("-?\\d+(\\.\\d+)?") && Integer.parseInt(idParam) > 0)) {
-			req.getRequestDispatcher("/error.jsp").forward(req, resp);
-			return;
-		}
-
-		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
+		resp.sendRedirect(req.getContextPath() + "/article?action=detail&id=" + articleId);
 
 	}
 
 	private void updateStatus(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String idParam = req.getParameter("comment_id");
 		String status = req.getParameter("status");
+
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loggedInUser");
+
+		if (user == null || user.getRole() == null || !user.getRole().toString().equals("ADMIN")) {
+			resp.sendRedirect(req.getContextPath());
+			return;
+		}
+
+		if (!user.getRole().toString().equals("ADMIN")) {
+			resp.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		try {
 			commentService.approveOrDenieComment(idParam, status);
@@ -142,19 +196,16 @@ public class CommentServlet extends HttpServlet {
 		String articleId = req.getParameter("article_id");
 
 		HttpSession session = req.getSession();
-		Integer userId = (Integer) session.getAttribute("user_id");
+		User user = (User) session.getAttribute("loggedInUser");
 
-		System.out.println(
-				"Received request - Content: " + content + ", ArticleId: " + articleId + ", UserId: " + userId);
-
-		if (userId == null) {
+		if (user == null) {
 			System.err.println("User not logged in");
-			resp.sendRedirect(req.getContextPath() + "/login");
+			resp.sendRedirect(req.getContextPath() + "/auth");
 			return;
 		}
 
 		try {
-			commentService.post(content, articleId, userId);
+			commentService.post(content, articleId, Integer.parseInt(user.getId().toString()));
 			System.out.println("Comment posted successfully"); // Add this line for debugging
 		} catch (Exception e) {
 			e.printStackTrace(); // Add this line to print the full stack trace
@@ -165,7 +216,7 @@ public class CommentServlet extends HttpServlet {
 			return;
 		}
 
-		resp.sendRedirect(req.getContextPath() + "/article/" + articleId);
+		resp.sendRedirect(req.getContextPath() + "/article?action=detail&id=" + articleId);
 	}
 
 }
