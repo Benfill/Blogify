@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Blogify.iml" filepath="$PROJECT_DIR$/.idea/Blogify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Blogify.iml" filepath="$PROJECT_DIR$/Blogify.iml" />
     </modules>
   </component>
 </project>
