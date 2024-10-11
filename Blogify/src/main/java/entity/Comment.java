@@ -31,8 +31,8 @@ public class Comment {
 	private LocalDate creationDate;
 
 	@Enumerated(EnumType.STRING) // Maps enum as a string to the database.
-	@Column(name = "comment_status", nullable = true)
-	private CommentStatus commentStatus;
+	@Column(name = "comment_status")
+	private CommentStatus commentStatus = CommentStatus.PENDING;
 
 	@ManyToOne(fetch = FetchType.LAZY) // Specifies a many-to-one relationship with the Article entity.
 	@JoinColumn(name = "article") // Column name in the comments table that refers to the article.

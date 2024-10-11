@@ -37,7 +37,7 @@ CREATE TABLE users (
  	 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  	 	content TEXT,
  	 	creation_date DATE,
- 	 	comment_status ENUM('APPROVED', 'DENIED') DEFAULT NULL,
+ 	 	comment_status ENUM('APPROVED', 'DENIED', 'PENDING') DEFAULT 'PENDING',
  	 	article INT,
  	 	user_id INT,
  	 	FOREIGN KEY (user_id) REFERENCES users(id),

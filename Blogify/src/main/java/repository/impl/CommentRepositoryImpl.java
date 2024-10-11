@@ -6,24 +6,21 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import entity.Comment;
 import enums.CommentStatus;
 import repository.ICommentRepository;
+import utils.HibernateUtil;
 
 public class CommentRepositoryImpl implements ICommentRepository {
 	private static final Logger log = Logger.getLogger(CommentRepositoryImpl.class.getName());
-	private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 	@Override
 	public List<Comment> readAll(int offset) {
-		Session session = null;
 		try {
-			session = sessionFactory.openSession();
+			Session session = HibernateUtil.getSessionFactory().openSession();
 			Query<Comment> query = session.createQuery("FROM Comment", Comment.class);
 			query.setFirstResult(offset);
 			query.setMaxResults(5);
@@ -38,7 +35,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
 	@Override
 	public void insert(Comment comment) throws Exception {
 
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = null;
 
 		try {
@@ -66,7 +63,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
 		Transaction transaction = null;
 
 		try {
-			session = sessionFactory.openSession();
+			session = HibernateUtil.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 
 			Comment comment = session.get(Comment.class, commentObj.getId());
@@ -92,7 +89,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
 	@Override
 	public void delete(Comment comment) throws Exception {
 		Transaction transaction = null;
-		try (Session session = sessionFactory.openSession()) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
 
 			Comment entity = session.get(Comment.class, comment.getId());
@@ -116,7 +113,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
 		Transaction transaction = null;
 
 		try {
-			session = sessionFactory.openSession();
+			session = HibernateUtil.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 
 			Comment comment = session.get(Comment.class, commentId);
@@ -142,7 +139,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
 	public Optional<Comment> readById(int id) {
 		Session session = null;
 		try {
-			session = sessionFactory.openSession();
+			session = HibernateUtil.getSessionFactory().openSession();
 			Query<Comment> query = session.createQuery("FROM Comment WHERE id = :id", Comment.class);
 			query.setParameter("id", id);
 			return query.uniqueResultOptional();
