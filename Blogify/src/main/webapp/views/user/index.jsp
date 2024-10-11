@@ -149,7 +149,7 @@
         }
 
         window.onload = function() {
-            setTimeout(cleanUrl, 3000); // 3000 milliseconds = 3 seconds
+            setTimeout(cleanUrl, 3000);
         };
     </script>
 
