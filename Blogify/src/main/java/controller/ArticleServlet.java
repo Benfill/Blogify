@@ -173,6 +173,8 @@ public class ArticleServlet extends HttpServlet {
         String content = null;
         String fileName = null;
         String status = null;
+        String filePath = null;
+
     
         ArticleModel model = new ArticleModel();
         Article newArticle = new Article();
@@ -181,7 +183,6 @@ public class ArticleServlet extends HttpServlet {
         if (ServletFileUpload.isMultipartContent(req)) {
             DiskFileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
-    
             try {
                 List<FileItem> formItems = upload.parseRequest(req);
     
@@ -189,9 +190,8 @@ public class ArticleServlet extends HttpServlet {
                     for (FileItem item : formItems) {
                         if (!item.isFormField()) {
                             fileName = new File(item.getName()).getName() ;
-                            String filePath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY + File.separator + fileName;
+                            filePath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY + File.separator + fileName;
                             
-
 
                             File uploadDir = new File(getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY);
                             if (!uploadDir.exists()) {
@@ -216,7 +216,7 @@ public class ArticleServlet extends HttpServlet {
                 // Set article fields
                 newArticle.setTitle(title);
                 newArticle.setContent(content);
-                newArticle.setArticlePictureUrl(fileName+"_"+LocalDateTime.now());
+                newArticle.setArticlePictureUrl(fileName);
                 if ("PUBLISHED".equals(status)) {
                     newArticle.setStatus(ArticleStatus.PUBLISHED.name());
                     newArticle.setPublishedDateTime(LocalDateTime.now());
