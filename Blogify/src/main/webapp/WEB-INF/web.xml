@@ -29,6 +29,16 @@
 	</servlet-mapping>
 	<!-- Auth mapping -->
 
+ 	<!-- User Mapping -->
+	<servlet>
+		<servlet-name>UserServlet</servlet-name>
+		<servlet-class>controller.UserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserServlet</servlet-name>
+		<url-pattern>/user</url-pattern>
+	</servlet-mapping>
+	<!-- User Mapping End -->
 
 	<!-- Comment mapping -->
 	<servlet>
