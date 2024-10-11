@@ -24,7 +24,7 @@
         <property name="hibernate.format_sql">true</property>
 
         <!-- Create tables automatically, can be set to "update", "validate", "none", or "create-drop" -->
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Entity mappings -->
 
