@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import entity.Article;
 import model.ArticleDTO;
-import repository.IArticleRepository;
 import utils.HibernateUtil;
 
 public class ArticleRepositoryImpl implements IArticleRepository {
@@ -164,19 +163,22 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             if (article != null) {
                 session.delete(article);
                 transaction.commit();
-                return true; 
+                return true;
             } else {
                 logger.warn("Article not found for ID: " + id);
-                return false; 
+                return false;
             }
         } catch (Exception e) {
             if (transaction != null) {
-                transaction.rollback(); 
+                transaction.rollback();
             }
             logger.error("Error deleting article with ID: " + id, e);
             return false;
         }
     }
+
+
+    
     
     
 }

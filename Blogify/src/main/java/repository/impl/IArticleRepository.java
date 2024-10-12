@@ -1,11 +1,10 @@
-package repository;
-
-import entity.Article;
-import model.ArticleDTO;
+package repository.impl;
 
 import java.util.List;
 import java.util.Optional;
 
+import entity.Article;
+import model.ArticleDTO;
 
 public interface IArticleRepository {
     public Article save(Article article);
@@ -14,5 +13,5 @@ public interface IArticleRepository {
     public Boolean updateArticle(Article article);
     public Article readById(long id);
     public int countArticles();
-    public boolean deleteArticle(Long id);
+    public boolean deleteArticle(Long id );
 }

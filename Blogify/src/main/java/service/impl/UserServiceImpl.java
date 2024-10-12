@@ -5,9 +5,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import entity.User;
+import enums.UserRole;
 import model.UserModel;
 import repository.impl.UserRepositoryImpl;
 import service.UserService;
+import utils.PasswordUtil;
 
 
 public class UserServiceImpl implements UserService {
@@ -40,10 +42,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User u) {
+    public UserModel updateUser(User u) {
+        UserModel model = new UserModel();
         User user = userRepository.findUserById(u.getId());
-        if (user != null) {
+        if (user == null) {
+            model.setError("User not found.");
+            return model;
+        } else if ("ADMIN".equals(user.getRole().toString())) {
+            u.setPassword(user.getPassword());
+            u.setRole(UserRole.ADMIN);
             userRepository.updateUser(u);
+            model.setSuccess("User successfully updated. (note: can't update Admin role or pwd, for safety)");
+            return model;
+        }  else {
+            if (u.getPassword().isEmpty()) u.setPassword(user.getPassword());
+            userRepository.updateUser(u);
+            model.setSuccess("User successfully updated.");
+            return model;
         }
     }
 

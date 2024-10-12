@@ -73,8 +73,8 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
-    public Boolean delete(Long id) {
-        return this.articleRepositoryImpl.deleteArticle(id);
+    public boolean delete(Long id) {
+      return this.articleRepositoryImpl.deleteArticle(id);
     }
 
    
