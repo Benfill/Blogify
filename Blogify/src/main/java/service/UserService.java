@@ -10,7 +10,7 @@ public interface UserService {
     User getUserById(Long id);
     User getUserByEmail(String email);
     void createUser(User user);
-    void updateUser(User user);
+    UserModel updateUser(User user);
     UserModel deleteUser(Long id);
     Boolean userAlreadyExist(String email);
 }

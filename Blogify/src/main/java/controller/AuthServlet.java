@@ -168,7 +168,7 @@ public class AuthServlet extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-		res.sendRedirect(req.getContextPath() + "/views/auth/login.jsp"); // Redirect to login page
+		res.sendRedirect(req.getContextPath());
 	}
 
 }
