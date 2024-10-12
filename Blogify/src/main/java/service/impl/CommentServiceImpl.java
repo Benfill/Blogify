@@ -23,7 +23,7 @@ public class CommentServiceImpl implements ICommentService {
 
 		int offset = (page - 1) * 5;
 
-		List<Comment> comments = commentRepo.readAll(offset);
+		List<Comment> comments = getCommentRepo().readAll(offset);
 
 		if (comments == null) {
 			return new ArrayList<>(); // Return an empty list instead of null
@@ -43,12 +43,12 @@ public class CommentServiceImpl implements ICommentService {
 		if (content == null || content.trim().isEmpty() || articleId == null || userId <= 0)
 			throw new Exception("Invalid input parameters");
 
-        User user = new UserServiceImpl().getUserById((long) userId);
+		User user = new UserServiceImpl().getUserById((long) userId);
 		ArticleModel article = new ArticleServiceImpl().getArticleById(Long.parseLong(articleId));
 		Comment comment = new Comment(content, LocalDate.now(), article.getArticle(), user);
 
 		System.out.println("Attempting to insert comment: " + comment);
-		commentRepo.insert(comment);
+		getCommentRepo().insert(comment);
 
 	}
 
@@ -61,14 +61,14 @@ public class CommentServiceImpl implements ICommentService {
 
 		int id = Integer.parseInt(idParam);
 
-		Optional<Comment> cOptional = commentRepo.readById(id);
+		Optional<Comment> cOptional = getCommentRepo().readById(id);
 
 		if (!cOptional.isPresent())
 			throw new Exception("the comment not found");
 
 		Comment comment = cOptional.get();
 
-		commentRepo.update(comment, content);
+		getCommentRepo().update(comment, content);
 	}
 
 	@Override
@@ -78,14 +78,14 @@ public class CommentServiceImpl implements ICommentService {
 
 		int id = Integer.parseInt(idParam);
 
-		Optional<Comment> cOptional = commentRepo.readById(id);
+		Optional<Comment> cOptional = getCommentRepo().readById(id);
 
 		if (!cOptional.isPresent())
 			throw new Exception("the comment not found");
 
 		Comment comment = cOptional.get();
 
-		commentRepo.delete(comment);
+		getCommentRepo().delete(comment);
 
 	}
 
@@ -99,13 +99,26 @@ public class CommentServiceImpl implements ICommentService {
 			throw new Exception("The status Param is null");
 
 		id = Integer.parseInt(idParam);
-		Optional<Comment> cOptional = commentRepo.readById(id);
+		Optional<Comment> cOptional = getCommentRepo().readById(id);
 
 		if (!cOptional.isPresent())
 			throw new Exception("Comment not found");
 
 		Comment comment = cOptional.get();
-		commentRepo.changeStatus(comment.getId(), status);
+		getCommentRepo().changeStatus(comment.getId(), status);
+	}
+
+	@Override
+	public long getCommentSize() {
+		return getCommentRepo().getCount();
+	}
+
+	public CommentRepositoryImpl getCommentRepo() {
+		return commentRepo;
+	}
+
+	public void setCommentRepo(CommentRepositoryImpl commentRepo) {
+		this.commentRepo = commentRepo;
 	}
 
 }

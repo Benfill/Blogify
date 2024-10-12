@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import entity.Article;
 import entity.User;
 import enums.ArticleStatus;
+import enums.CommentStatus;
 import model.ArticleDTO;
 import model.ArticleModel;
 import service.impl.ArticleServiceImpl;
@@ -142,7 +144,8 @@ public class ArticleServlet extends HttpServlet {
 			if (article != null) {
 				req.setAttribute("article", article.getArticle());
 				req.setAttribute("user", article.getUser());
-				req.setAttribute("comments", article.getComments());
+				req.setAttribute("comments", article.getComments().stream()
+						.filter(c -> c.getCommentStatus().equals(CommentStatus.APPROVED)).collect(Collectors.toList()));
 
 				if (article.getComments() != null)
 					req.setAttribute("commentCount", article.getComments().stream().count());

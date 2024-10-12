@@ -54,12 +54,21 @@ public class CommentServlet extends HttpServlet {
 				filter = "approved";
 			else if (action.equals("denied"))
 				filter = "denied";
+			else if (action.equals("pending")) {
+				filter = "pending";
+			}
 
 		}
 
 		List<Comment> comments = commentService.getAll(page, filter);
 
+		long total = commentService.getCommentSize();
+		int totalPages = (int) Math.ceil((double) total / 5);
+
 		req.setAttribute("comments", comments);
+		req.setAttribute("page", page);
+		req.setAttribute("total", total);
+		req.setAttribute("totalPages", totalPages);
 
 		req.getRequestDispatcher("/views/comment/index.jsp").forward(req, resp);
 
@@ -206,7 +215,7 @@ public class CommentServlet extends HttpServlet {
 
 		try {
 			commentService.post(content, articleId, Integer.parseInt(user.getId().toString()));
-			System.out.println("Comment posted successfully"); // Add this line for debugging
+			req.setAttribute("successMessage", "Comment posted successfully please wait for the admin approval");
 		} catch (Exception e) {
 			e.printStackTrace(); // Add this line to print the full stack trace
 			System.err.println("Error posting comment: " + e.getMessage()); // Add this line for debugging
