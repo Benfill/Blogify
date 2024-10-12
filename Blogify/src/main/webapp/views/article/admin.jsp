@@ -140,11 +140,7 @@
 
     </div>
 
-    <script>
-        function openDeleteModal(){
-            console.log("alert")
-        }
-    </script>
+   
     <!-- <script src="${pageContext.request.contextPath}/script/index.js"></script> -->
 
 </layout:dashboard>

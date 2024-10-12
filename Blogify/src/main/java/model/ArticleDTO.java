@@ -1,13 +1,15 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class ArticleDTO {
     private Long id;
     private String articlePictureUrl;
     private String content;
-    private LocalDateTime creationDate;
-    private LocalDateTime publishedDateTime;
+    private Date creationDate;
+    private Date publishedDateTime;
     private String status;
     private String title;
     private Long userId; 
@@ -15,15 +17,16 @@ public class ArticleDTO {
     private String secondName; 
 
 
-    // Constructor
     public ArticleDTO(Long id, String articlePictureUrl, String content,
                       LocalDateTime creationDate, LocalDateTime publishedDateTime,
                       String status, String title, Long userId, String firstName , String secondName) {
         this.id = id;
         this.articlePictureUrl = articlePictureUrl;
         this.content = content;
-        this.creationDate = creationDate;
-        this.publishedDateTime = publishedDateTime;
+        this.creationDate = Date.from(creationDate.atZone(ZoneId.systemDefault()).toInstant());
+        if(publishedDateTime!=null){
+            this.publishedDateTime = Date.from(publishedDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        }
         this.status = status;
         this.title = title;
         this.userId = userId;
@@ -56,22 +59,13 @@ public class ArticleDTO {
         this.content = content;
     }
 
-    public LocalDateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDateTime getPublishedDateTime() {
+    public Date getPublishedDateTime() {
         return publishedDateTime;
     }
-
-    public void setPublishedDateTime(LocalDateTime publishedDateTime) {
-        this.publishedDateTime = publishedDateTime;
-    }
-
     public String getStatus() {
         return status;
     }
