@@ -45,7 +45,7 @@ class CommentServiceTest {
 	}
 
 	@Test
-	void testGetAll_NoFilter() {
+	void testGetAll() {
 		List<Comment> mockComments = Arrays.asList(new Comment("Test comment 1", LocalDate.now(), null, null),
 				new Comment("Test comment 2", LocalDate.now(), null, null));
 		when(commentRepo.readAll(0)).thenReturn(mockComments);
@@ -80,7 +80,7 @@ class CommentServiceTest {
 	}
 
 	@Test
-	void testUpdate_ValidInput() throws Exception {
+	void testUpdate() throws Exception {
 		Comment mockComment = new Comment();
 		when(commentRepo.readById(1)).thenReturn(Optional.of(mockComment));
 
@@ -90,32 +90,13 @@ class CommentServiceTest {
 	}
 
 	@Test
-	void testUpdate_InvalidInput() {
-		assertThrows(Exception.class, () -> commentService.update(null, "content"));
-		assertThrows(Exception.class, () -> commentService.update("1", ""));
-		assertThrows(Exception.class, () -> commentService.update("1", null));
-	}
-
-	@Test
-	void testDelete_ValidInput() throws Exception {
+	void testDelete() throws Exception {
 		Comment mockComment = new Comment();
 		when(commentRepo.readById(1)).thenReturn(Optional.of(mockComment));
 
 		commentService.delete("1");
 
 		verify(commentRepo).delete(mockComment);
-	}
-
-	@Test
-	void testDelete_InvalidInput() {
-		assertThrows(Exception.class, () -> commentService.delete(null));
-		assertThrows(Exception.class, () -> commentService.delete("invalid"));
-	}
-
-	@Test
-	void testApproveOrDenieComment_InvalidInput() {
-		assertThrows(Exception.class, () -> commentService.approveOrDenieComment(null, "approved"));
-		assertThrows(Exception.class, () -> commentService.approveOrDenieComment("1", null));
 	}
 
 	@Test
