@@ -43,12 +43,14 @@
                        class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white hover:text-blue-500"
                        aria-current="page">Home</a>
                 </li>
-                
-                <li>
-                    <a href="${pageContext.request.contextPath}/user"
-                       class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white hover:text-blue-500"
-                       aria-current="page">Dashboard</a>
-                </li>
+
+                <c:if test="${not empty loggedInUser and loggedInUser.getRole() == 'ADMIN'}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/user"
+                           class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white hover:text-blue-500"
+                           aria-current="page">Dashboard</a>
+                    </li>
+                </c:if>
                 <li>
                     <c:choose>
                         <c:when test="${ not empty sessionScope.loggedInUser }">
