@@ -39,7 +39,7 @@
 				<p class="lead">${article.content}</p>
 				<figure>
 					<img
-						src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"
+						src="${pageContext.request.contextPath}/uploads/${article.articlePictureUrl}"
 						alt="">
 					<figcaption>Digital art by Anonymous</figcaption>
 				</figure>
@@ -48,22 +48,26 @@
 					<div class="flex justify-between items-center mb-6">
 						<h2
 							class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
-							(20)</h2>
+							(${ commentCount })</h2>
 					</div>
-					<form class="mb-6" method="post"
-						action="${pageContext.request.contextPath}/comment/store">
-						<input type="hidden" value="${article.id}" name="article_id" />
-						<div
-							class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-							<label for="comment" class="sr-only">Your comment</label>
-							<textarea id="comment" rows="6" name="comment_content"
-								class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-								placeholder="Write a comment..." required></textarea>
-						</div>
-						<button type="submit"
-							class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-							Post comment</button>
-					</form>
+
+					<c:if test="${sessionScope.loggedInUser != null}">
+						<form class="mb-6" method="post"
+							action="${pageContext.request.contextPath}/comment/store">
+							<input type="hidden" value="${article.id}" name="article_id" />
+							<div
+								class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+								<label for="comment" class="sr-only">Your comment</label>
+								<textarea id="comment" rows="6" name="comment_content"
+									class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+									placeholder="Write a comment..." required></textarea>
+							</div>
+							<button type="submit"
+								class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+								Post comment</button>
+						</form>
+					</c:if>
+
 					<c:forEach var="comment" items="${article.comments}">
 						<article
 							class="p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900">
@@ -113,10 +117,9 @@
 												<form class="w-full flex justify-start" method="post"
 													action="${ pageContext.request.contextPath }/comment/delete">
 													<input name="user_id" type="hidden"
-														value="${ comment.user.id }" />
-													<input name="article_id" type="hidden"
-														value="${ article.id }" /> <input name="comment_id"
-														type="hidden" value="${ comment.id }" />
+														value="${ comment.user.id }" /> <input name="article_id"
+														type="hidden" value="${ article.id }" /> <input
+														name="comment_id" type="hidden" value="${ comment.id }" />
 													<button
 														class="text-start w-full block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</button>
 												</form>
@@ -162,10 +165,9 @@
 												action="${ pageContext.request.contextPath }/comment/update"
 												method="post">
 												<input name="user_id" type="hidden"
-														value="${ comment.user.id }" />
-												<input name="article_id" type="hidden"
-													value="${ article.id }" /> <input name="comment_id"
-													type="hidden" value="${ comment.id }" />
+													value="${ comment.user.id }" /> <input name="article_id"
+													type="hidden" value="${ article.id }" /> <input
+													name="comment_id" type="hidden" value="${ comment.id }" />
 												<div>
 													<label for="comment-${ comment.id }"
 														class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
