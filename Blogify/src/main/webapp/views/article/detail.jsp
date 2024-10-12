@@ -39,7 +39,7 @@
 				<p class="lead">${article.content}</p>
 				<figure>
 					<img
-						src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"
+						src="${pageContext.request.contextPath}/uploads/${article.articlePictureUrl}"
 						alt="">
 					<figcaption>Digital art by Anonymous</figcaption>
 				</figure>
@@ -48,22 +48,26 @@
 					<div class="flex justify-between items-center mb-6">
 						<h2
 							class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
-							(20)</h2>
+							(${ commentCount })</h2>
 					</div>
-					<form class="mb-6" method="post"
-						action="${pageContext.request.contextPath}/comment/store">
-						<input type="hidden" value="${article.id}" name="article_id" />
-						<div
-							class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-							<label for="comment" class="sr-only">Your comment</label>
-							<textarea id="comment" rows="6" name="comment_content"
-								class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-								placeholder="Write a comment..." required></textarea>
-						</div>
-						<button type="submit"
-							class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-							Post comment</button>
-					</form>
+
+					<c:if test="${sessionScope.loggedInUser != null}">
+						<form class="mb-6" method="post"
+							action="${pageContext.request.contextPath}/comment/store">
+							<input type="hidden" value="${article.id}" name="article_id" />
+							<div
+								class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+								<label for="comment" class="sr-only">Your comment</label>
+								<textarea id="comment" rows="6" name="comment_content"
+									class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+									placeholder="Write a comment..." required></textarea>
+							</div>
+							<button type="submit"
+								class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+								Post comment</button>
+						</form>
+					</c:if>
+
 					<c:forEach var="comment" items="${article.comments}">
 						<article
 							class="p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900">
@@ -80,44 +84,50 @@
 										<time pubdate datetime="2022-02-08" title="February 8th, 2022">${comment.formattedCreationDate}</time>
 									</p>
 								</div>
-								<button id="dropdownComment-${comment.id}-Button"
-									data-dropdown-toggle="dropdownComment-${comment.id}"
-									class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-									type="button">
-									<svg class="w-4 h-4" aria-hidden="true"
-										xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-										viewBox="0 0 16 3">
+								<c:if
+									test="${sessionScope.loggedInUser != null && comment.user.id == sessionScope.loggedInUser.id}">
+									<button id="dropdownComment-${comment.id}-Button"
+										data-dropdown-toggle="dropdownComment-${comment.id}"
+										class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+										type="button">
+										<svg class="w-4 h-4" aria-hidden="true"
+											xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+											viewBox="0 0 16 3">
                                         <path
-											d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+												d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
                                     </svg>
-									<span class="sr-only">Comment settings</span>
-								</button>
-								<!-- Dropdown menu -->
-								<div id="dropdownComment-${comment.id}"
-									class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-									<ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-										aria-labelledby="dropdownMenuIconHorizontalButton">
-										<li>
-											<!-- Modal toggle --> <span
-											data-modal-target="authentication-modal-${comment.id}"
-											data-modal-toggle="authentication-modal-${comment.id}"
-											type="button"
-											class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit
-										</span>
-										</li>
-										<li>
-											<form class="w-full flex justify-start"
-												method="post"
-												action="${ pageContext.request.contextPath }/comment/delete">
-												<input name="article_id" type="hidden"
-													value="${ article.id }" /> <input name="comment_id"
-													type="hidden" value="${ comment.id }" />
-												<button
-													class="text-start w-full block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</button>
-											</form>
-										</li>
-									</ul>
-								</div>
+										<span class="sr-only">Comment settings</span>
+									</button>
+
+
+									<!-- Dropdown menu -->
+									<div id="dropdownComment-${comment.id}"
+										class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+										<ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+											aria-labelledby="dropdownMenuIconHorizontalButton">
+											<li>
+												<!-- Modal toggle --> <span
+												data-modal-target="authentication-modal-${comment.id}"
+												data-modal-toggle="authentication-modal-${comment.id}"
+												type="button"
+												class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit
+											</span>
+											</li>
+											<li>
+												<form class="w-full flex justify-start" method="post"
+													action="${ pageContext.request.contextPath }/comment/delete">
+													<input name="user_id" type="hidden"
+														value="${ comment.user.id }" /> <input name="article_id"
+														type="hidden" value="${ article.id }" /> <input
+														name="comment_id" type="hidden" value="${ comment.id }" />
+													<button
+														class="text-start w-full block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</button>
+												</form>
+											</li>
+										</ul>
+									</div>
+								</c:if>
+
 							</footer>
 							<p>${ comment.content }</p>
 
@@ -154,9 +164,10 @@
 											<form class="space-y-4"
 												action="${ pageContext.request.contextPath }/comment/update"
 												method="post">
-												<input name="article_id" type="hidden"
-													value="${ article.id }" /> <input name="comment_id"
-													type="hidden" value="${ comment.id }" />
+												<input name="user_id" type="hidden"
+													value="${ comment.user.id }" /> <input name="article_id"
+													type="hidden" value="${ article.id }" /> <input
+													name="comment_id" type="hidden" value="${ comment.id }" />
 												<div>
 													<label for="comment-${ comment.id }"
 														class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your

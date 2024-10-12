@@ -1,0 +1,114 @@
+package model;
+
+import java.time.LocalDateTime;
+
+public class ArticleDTO {
+    private Long id;
+    private String articlePictureUrl;
+    private String content;
+    private LocalDateTime creationDate;
+    private LocalDateTime publishedDateTime;
+    private String status;
+    private String title;
+    private Long userId; 
+    private String firstName; 
+    private String secondName; 
+
+
+    // Constructor
+    public ArticleDTO(Long id, String articlePictureUrl, String content,
+                      LocalDateTime creationDate, LocalDateTime publishedDateTime,
+                      String status, String title, Long userId, String firstName , String secondName) {
+        this.id = id;
+        this.articlePictureUrl = articlePictureUrl;
+        this.content = content;
+        this.creationDate = creationDate;
+        this.publishedDateTime = publishedDateTime;
+        this.status = status;
+        this.title = title;
+        this.userId = userId;
+        this.firstName = firstName; 
+        this.secondName = secondName;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getArticlePictureUrl() {
+        return articlePictureUrl;
+    }
+
+    public void setArticlePictureUrl(String articlePictureUrl) {
+        this.articlePictureUrl = articlePictureUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getPublishedDateTime() {
+        return publishedDateTime;
+    }
+
+    public void setPublishedDateTime(LocalDateTime publishedDateTime) {
+        this.publishedDateTime = publishedDateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserFirstName() {
+        return this.firstName;
+    }
+
+    public void setUserFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getUserSecondName() {
+        return this.secondName;
+    }
+
+    public void setUserSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+}
