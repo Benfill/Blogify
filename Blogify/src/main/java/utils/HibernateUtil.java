@@ -5,6 +5,8 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class HibernateUtil {
 	private static final Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
 	private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -12,19 +14,12 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 			// Load environment variables from .env file
-//			Dotenv dotenv = Dotenv.configure()
-//					.directory("/home/exshy/Documents/GitHub/Blogify/Blogify/.env")
-//					.load();
-//
-//			String driver = dotenv.get("DB_DRIVER");
-//			String url = dotenv.get("DB_URL");
-//			String username = dotenv.get("DB_USERNAME");
-//			String password = dotenv.get("DB_PASSWORD");
+			Dotenv dotenv = Dotenv.configure().directory("/home/exshy/Documents/GitHub/Blogify/Blogify/.env").load();
 
-			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/blogify";
-			String username = "root";
-			String password = "";
+			String driver = dotenv.get("DB_DRIVER");
+			String url = dotenv.get("DB_URL");
+			String username = dotenv.get("DB_USERNAME");
+			String password = dotenv.get("DB_PASSWORD");
 
 			// Validate database connection properties
 			if (driver == null || url == null || username == null || password == null) {
