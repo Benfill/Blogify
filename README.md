@@ -1,4 +1,3 @@
-
 # Blogify - Web Application for Managing Blog Articles
 
 ## Project Description
@@ -12,9 +11,9 @@ The main objective of the application is to provide a more dynamic web solution 
 - **Web**: Servlets, JSP, JSTL
 - **ORM**: Hibernate and JPA
 - **Application Server**: Apache Tomcat
-- **Project Management**: Maven for dependencies, JIRA for project management, Git for version control
+- **Project Management**: Maven for dependencies, [JIRA](https://benfill.atlassian.net/jira/software/projects/BOL/boards/35?atlOrigin=eyJpIjoiYTE5ODU3MDRlZDE3NGZkMjk3NmQzZTIxY2Q5Y2MzNDUiLCJwIjoiaiJ9) for project management, Git for version control
 - **Testing**: JUnit and Mockito
-- **Design**: CSS framework, mockups created with FIGMA
+- **Design**: CSS framework, mockups created with [FIGMA](https://www.figma.com/design/YwXTUwAGHlm5Y6uJRuBAwn/Blogify?node-id=0-1&t=IcLoOcJNAV4GmtpK-1)
 - **Architecture**: MVC (Model-View-Controller)
 
 ## Project Structure
@@ -62,7 +61,7 @@ The application follows a layered MVC architecture, separating presentation logi
    ```
 2. Deploy the WAR file in the `webapps` folder of Tomcat.
 3. Start the Tomcat server.
-4. Access the application via `http://localhost:8080/name_of_the_application`.
+4. Access the application via `http://localhost:8080/blogify`.
 
 ## Screenshots
 *(Add screenshots of the application here to showcase the user interface)*
@@ -77,7 +76,7 @@ The application follows a layered MVC architecture, separating presentation logi
 - Developing a REST API for the application to facilitate integration with other services.
 
 ## Team and Contact
-**Members**: M.Bachiri, M.Hachami, A.Benfill 
+**Members**: M.Bachiri, M.Hachami, A.Benfill  
 **Email**: blogify@youcode.com
 
 ## Performance Criteria

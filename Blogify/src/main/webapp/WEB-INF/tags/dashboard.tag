@@ -38,7 +38,7 @@
             </div>
 
             <nav class="mt-10">
-                <a class="flex items-center px-6 py-2 mt-4 text-gray-100 bg-gray-700 bg-opacity-25" href="#">
+                <a class="flex items-center px-6 py-2 mt-4 text-gray-100 bg-gray-700 bg-opacity-25" href="user">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -47,14 +47,14 @@
                               d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                     </svg>
 
-                    <span class="mx-3">Dashboard</span>
+                    <span class="mx-3">Users</span>
                 </a>
 
 
 
 
                 <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                   href="#">
+                   href="user?action=new">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -118,7 +118,7 @@
                              class="absolute right-0 z-10 w-48 mt-2 overflow-hidden bg-white rounded-md shadow-xl"
                              style="display: none;">
                             <div>
-                                <form action="auth?action=logout" method="post">
+                                <form class="flex justify-content-start" action="auth?action=logout" method="post">
                                     <button type="submit">Logout</button>
                                 </form>
                             </div>
