@@ -16,4 +16,6 @@ public interface ICommentService {
 
 	void approveOrDenieComment(String id, String status) throws Exception;
 
+	long getCommentSize();
+
 }
