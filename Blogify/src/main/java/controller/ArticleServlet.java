@@ -56,6 +56,8 @@ public class ArticleServlet extends HttpServlet {
 
 		if (action == null || action.isEmpty()) {
 			index(req, res);
+		} else if ("admin".equalsIgnoreCase(action)) {
+			admin(req, res);
 		} else if ("add".equalsIgnoreCase(action)) {
 			create(req, res);
 		} else if ("list".equalsIgnoreCase(action)) {
@@ -108,14 +110,63 @@ public class ArticleServlet extends HttpServlet {
 
 	}
 
+	protected void admin(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		logger.info("userf role" + loggedInUser.getRole());
+		if (loggedInUser == null || loggedInUser.getRole() == null
+				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
+
+		String pageString = req.getParameter("page");
+		int page = 1;
+
+		if (pageString != null && pageString.matches("-?\\d+(\\.\\d+)?"))
+			page = Integer.parseInt(pageString);
+
+		List<ArticleDTO> articles = this.articleServiceImpl.getAllArticles(page);
+
+		long totalProjects = this.articleServiceImpl.count();
+		int pageSize = 5;
+		long pageNumbers = (totalProjects + pageSize - 1) / pageSize;
+
+		ArticleModel model = new ArticleModel();
+		model.setArticles(articles);
+		model.setTotalProjects(totalProjects);
+		model.setPageNumbers(pageNumbers);
+		model.setPageSize(pageSize);
+		model.setPage(page);
+
+		req.setAttribute("model", model);
+
+		this.getServletContext().getRequestDispatcher("/views/article/admin.jsp").forward(req, res);
+
+	}
+
 	protected void create(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		if (loggedInUser == null || loggedInUser.getRole() == null
+				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		this.getServletContext().getRequestDispatcher("/views/article/add.jsp").forward(req, res);
 	}
 
 	protected void edit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String articleId = req.getParameter("id");
+		HttpSession session = req.getSession();
+
 		ArticleModel model = new ArticleModel();
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		if (loggedInUser == null || loggedInUser.getRole() == null) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
 		if (articleId != null && !articleId.isEmpty()) {
 			Long id = Long.parseLong(articleId);
 			Article article = this.articleServiceImpl.findArticleById(id);
@@ -161,16 +212,13 @@ public class ArticleServlet extends HttpServlet {
 	}
 
 	protected void createP(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		// Simulate session check
-		HttpSession session = req.getSession(false);
-		if (session == null) {
-			res.sendRedirect("views/auth/login.jsp");
+		HttpSession session = req.getSession();
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		if (loggedInUser == null || loggedInUser.getRole() == null
+				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
+			res.sendRedirect(req.getContextPath());
 			return;
 		}
-
-		// Simulating user data
-		session.setAttribute("user_id", 1L);
-		session.setAttribute("first_name", "med");
 
 		String title = null;
 		String content = null;
@@ -241,8 +289,7 @@ public class ArticleServlet extends HttpServlet {
 					return;
 				}
 
-				User user = this.userServiceImpl.getUserById(1L);
-				newArticle.setUserId(user);
+				newArticle.setUserId(loggedInUser);
 
 				// Insert the article
 				Boolean inserted = this.articleServiceImpl.addNewArticle(newArticle);
@@ -276,6 +323,18 @@ public class ArticleServlet extends HttpServlet {
 	}
 
 	protected void delete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String id = req.getParameter("id");
+
+		if (id != null) {
+			boolean deleted = this.articleServiceImpl.delete(Long.parseLong(id));
+			if (deleted) {
+				res.sendRedirect("article?action=admin&success=Article deleted  ");
+
+			} else {
+				res.sendRedirect("article?action=admin&error=Article not deleted  ");
+			}
+
+		}
 
 	}
 

@@ -45,6 +45,15 @@
                                     --%>
 								</p>
 							</div>
+							<c:if test="${sessionScope.loggedInUser != null && user.id == sessionScope.loggedInUser.id}" >
+
+								<div class="relative left-[100%]">
+									<a href="${pageContext.request.contextPath}/article?action=edit&id=${article.id}">edit</a>
+
+								</div>
+							</c:if>
+						
+							
 						</div>
 					</address>
 					<h1

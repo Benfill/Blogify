@@ -13,4 +13,5 @@ public interface IArticleService {
     public Boolean updateArticle(Article article);
     public int count();
 	ArticleModel getArticleById(Long id);
+    public boolean delete(Long id);
 }
