@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import entity.Article;
 import model.ArticleDTO;
+import repository.IArticleRepository;
 import utils.HibernateUtil;
 
 public class ArticleRepositoryImpl implements IArticleRepository {
