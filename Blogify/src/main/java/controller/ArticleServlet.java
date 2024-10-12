@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import entity.Article;
 import entity.User;
 import enums.ArticleStatus;
+import enums.CommentStatus;
 import model.ArticleDTO;
 import model.ArticleModel;
 import service.impl.ArticleServiceImpl;
@@ -54,10 +56,9 @@ public class ArticleServlet extends HttpServlet {
 
 		if (action == null || action.isEmpty()) {
 			index(req, res);
-		}else if("admin".equalsIgnoreCase(action)){
-			admin(req,res);
-		}
-		else if ("add".equalsIgnoreCase(action)) {
+		} else if ("admin".equalsIgnoreCase(action)) {
+			admin(req, res);
+		} else if ("add".equalsIgnoreCase(action)) {
 			create(req, res);
 		} else if ("list".equalsIgnoreCase(action)) {
 			index(req, res);
@@ -111,12 +112,13 @@ public class ArticleServlet extends HttpServlet {
 
 	protected void admin(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-		logger.info("userf role"+loggedInUser.getRole());
-        if (loggedInUser == null || loggedInUser.getRole() == null || !loggedInUser.getRole().toString().equals("ADMIN")) {
-            res.sendRedirect(req.getContextPath());
-            return;
-        }
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		logger.info("userf role" + loggedInUser.getRole());
+		if (loggedInUser == null || loggedInUser.getRole() == null
+				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		String pageString = req.getParameter("page");
 		int page = 1;
@@ -145,11 +147,12 @@ public class ArticleServlet extends HttpServlet {
 
 	protected void create(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser == null || loggedInUser.getRole() == null || !loggedInUser.getRole().toString().equals("ADMIN")) {
-            res.sendRedirect(req.getContextPath());
-            return;
-        }
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		if (loggedInUser == null || loggedInUser.getRole() == null
+				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		this.getServletContext().getRequestDispatcher("/views/article/add.jsp").forward(req, res);
 	}
@@ -158,13 +161,12 @@ public class ArticleServlet extends HttpServlet {
 		String articleId = req.getParameter("id");
 		HttpSession session = req.getSession();
 
-
 		ArticleModel model = new ArticleModel();
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser == null || loggedInUser.getRole() == null ) {
-            res.sendRedirect(req.getContextPath());
-            return;
-        }
+		if (loggedInUser == null || loggedInUser.getRole() == null) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
 		if (articleId != null && !articleId.isEmpty()) {
 			Long id = Long.parseLong(articleId);
 			Article article = this.articleServiceImpl.findArticleById(id);
@@ -193,7 +195,8 @@ public class ArticleServlet extends HttpServlet {
 			if (article != null) {
 				req.setAttribute("article", article.getArticle());
 				req.setAttribute("user", article.getUser());
-				req.setAttribute("comments", article.getComments());
+				req.setAttribute("comments", article.getComments().stream()
+						.filter(c -> c.getCommentStatus().equals(CommentStatus.APPROVED)).collect(Collectors.toList()));
 
 				if (article.getComments() != null)
 					req.setAttribute("commentCount", article.getComments().stream().count());
@@ -210,12 +213,12 @@ public class ArticleServlet extends HttpServlet {
 
 	protected void createP(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser == null || loggedInUser.getRole() == null || !loggedInUser.getRole().toString().equals("ADMIN")) {
-            res.sendRedirect(req.getContextPath());
-            return;
-        }
-
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		if (loggedInUser == null || loggedInUser.getRole() == null
+				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
+			res.sendRedirect(req.getContextPath());
+			return;
+		}
 
 		String title = null;
 		String content = null;
@@ -324,16 +327,14 @@ public class ArticleServlet extends HttpServlet {
 
 		if (id != null) {
 			boolean deleted = this.articleServiceImpl.delete(Long.parseLong(id));
-			if(deleted){
-				res.sendRedirect("article?action=admin&success=Article deleted  " );
+			if (deleted) {
+				res.sendRedirect("article?action=admin&success=Article deleted  ");
 
-			}else{
-				res.sendRedirect("article?action=admin&error=Article not deleted  " );
+			} else {
+				res.sendRedirect("article?action=admin&error=Article not deleted  ");
 			}
 
-
 		}
-
 
 	}
 

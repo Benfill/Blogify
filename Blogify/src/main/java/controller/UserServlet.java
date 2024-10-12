@@ -6,6 +6,7 @@ import model.UserModel;
 import repository.impl.UserRepositoryImpl;
 import service.UserService;
 import service.impl.UserServiceImpl;
+import utils.PasswordUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -85,19 +86,24 @@ public class UserServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
         User user = userService.getUserById(id);
-        request.setAttribute("user", user);
-        request.getRequestDispatcher("views/user/edit.jsp").forward(request, response);
+        if (user == null){
+            response.sendRedirect("user?error=No User Found.");
+        } else {
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("views/user/edit.jsp").forward(request, response);
+        }
     }
 
     private void insertUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String firstName = request.getParameter("first_name");
-        String lastName = request.getParameter("lastName");
+        String lastName = request.getParameter("second_name");
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        LocalDate birthDate = stringToLocaldate(request.getParameter("birth_date"));
+        String password = PasswordUtil.hashPassword(request.getParameter("password"));
+        String birthDate = request.getParameter("birth_date");
         UserRole role = UserRole.valueOf(request.getParameter("role"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM");
 
-        userService.createUser(new User(firstName, lastName, email, password, birthDate, role));
+        userService.createUser(new User(firstName, lastName, email, password, LocalDate.parse(birthDate, formatter), role));
         response.sendRedirect("user");
     }
 
@@ -106,26 +112,19 @@ public class UserServlet extends HttpServlet {
         String firstName = request.getParameter("first_name");
         String secondName = request.getParameter("second_name");
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String password = request.getParameter("password").isEmpty() ? "" : PasswordUtil.hashPassword(request.getParameter("password"));
+
         String birthDate = request.getParameter("birth_date");
         UserRole role = UserRole.valueOf(request.getParameter("role"));
-        userService.updateUser(new User(id, firstName, secondName, email, password, stringToLocaldate(birthDate), role));
-        response.sendRedirect("user");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy-MM-dd");
+        UserModel model = userService.updateUser(new User(id, firstName, secondName, email, password, LocalDate.parse(birthDate, formatter), role));
+        response.sendRedirect("user?" + (model.getError() != null ? "error=" + model.getError() : "") + "&" +(model.getSuccess() != null ? "success=" + model.getSuccess() : ""));
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
-        UserModel userModel = userService.deleteUser(id);
-        request.setAttribute("userModel", userModel);
-        if (userModel.getError() != null) {
-            response.sendRedirect("user?action=list&error=" + userModel.getError());
-            return;
-        }
-        if (userModel.getSuccess() != null) {
-            response.sendRedirect("user?action=list&success=" + userModel.getSuccess());
-            return;
-        }
-        response.sendRedirect("");
+        UserModel model = userService.deleteUser(id);
+        response.sendRedirect("user?" + (model.getError() != null ? "error=" + model.getError() : "") + "&" +(model.getSuccess() != null ? "success=" + model.getSuccess() : ""));
     }
 
 

@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="layout" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="dashboard" tagdir="/WEB-INF/tags" %>
 <%@page import="model.ArticleModel"%>
 <%
   ArticleModel model=new ArticleModel();
@@ -8,7 +8,7 @@
 	 model=(ArticleModel)request.getAttribute("model");
   }
 %> 
-<layout:dashboard >
+<dashboard:dashboard>
 
 <div class="w-[40%] my-[20px] mx-auto">
       <!-- Error Message -->
@@ -76,4 +76,5 @@
     </form>
    
   </div>
-</layout:dashboard>
+</dashboard:dashboard>
+
