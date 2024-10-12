@@ -56,38 +56,38 @@ document.querySelector('#register').addEventListener('submit', function(event) {
     }
 });
 
-function login(event){
-    event.preventDefault();
-    const form = document.querySelector("#login");    
+// function login(event){
+//     event.preventDefault();
+//     const form = document.querySelector("#login");    
 
   
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
+//     const email = document.getElementById('email').value.trim();
+//     const password = document.getElementById('password').value.trim();
 
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach((error) => error.remove());
+//     const errorMessages = document.querySelectorAll('.error-message');
+//     errorMessages.forEach((error) => error.remove());
 
-    let valid = true;
-
-
-
-    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    if (!emailPattern.test(email)) {
-      showError('email', 'Please enter a valid email.');
-      valid = false;
-    }
-
-    if (password.length < 8) {
-      showError('password', 'Password must be at least 8 characters long.');
-      valid = false;
-    }
+//     let valid = true;
 
 
 
-    if (valid) {
-      form.submit();
-    }
-}
+//     const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+//     if (!emailPattern.test(email)) {
+//       showError('email', 'Please enter a valid email.');
+//       valid = false;
+//     }
+
+//     if (password.length < 8) {
+//       showError('password', 'Password must be at least 8 characters long.');
+//       valid = false;
+//     }
+
+
+
+//     if (valid) {
+//       form.submit();
+//     }
+// }
 // document.querySelector('#login').addEventListener('submit', function(event) {
     // event.preventDefault();
     // console.log("enter");
@@ -122,6 +122,10 @@ function login(event){
     // }
 //   });
   // Helper function to show error messages
+  
+ 
+
+ 
   function showError(inputId, message) {
     const inputElement = document.getElementById(inputId);
     const errorMessage = document.createElement('div');
@@ -129,3 +133,5 @@ function login(event){
     errorMessage.textContent = message;
     inputElement.insertAdjacentElement('afterend', errorMessage);
   }
+
+

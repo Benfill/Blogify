@@ -3,6 +3,10 @@ package repository.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -10,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import entity.Article;
+import model.ArticleDTO;
 import utils.HibernateUtil;
 
 public class ArticleRepositoryImpl implements IArticleRepository {
@@ -41,23 +46,22 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public List<Article> getAllArticles() {
-       List<Article> articles = null;
+    public List<ArticleDTO> getAllArticles(int from,int length) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = null;
+        session.beginTransaction();
 
-         try{
-            transaction = session.beginTransaction();
-            String sql = "SELECT * FROM articles ;";
-            Query<Article> query = session.createNativeQuery(sql, Article.class);
-            articles = query.getResultList();
+        String hql = "SELECT new model.ArticleDTO(a.id, a.articlePictureUrl, a.content, "
+                + "a.creationDate, a.publishedDateTime, a.status, a.title, "
+                + "u.id, u.firstName , u.secondName) " 
+                + "FROM Article a LEFT JOIN a.user u"; 
 
-        } catch (Exception e) {
-       
-            logger.error("Could fetch articles", e);
-        } finally {
-            session.close(); 
-        } 
+        List<ArticleDTO> articles = session.createQuery(hql, ArticleDTO.class)
+                                        .setFirstResult(from)
+                                        .setMaxResults(length)
+                                        .getResultList();
+
+        session.getTransaction().commit();
+        session.close();
 
         return articles;
     }
@@ -118,6 +122,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
 		String hql = "SELECT a FROM Article a LEFT JOIN FETCH a.comments c LEFT JOIN FETCH c.user "
 				+ "WHERE a.id = :id";
+                
+
 
 		Article article = session.createQuery(hql, Article.class).setParameter("id", id).uniqueResult();
 
@@ -126,6 +132,50 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
 		return article;
 	}
+
+    @Override
+    public int countArticles() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+        
+    
+        try {
+            String hql = "SELECT COUNT(a) FROM Article a";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            
+            Long count = query.uniqueResult();
+            
+            return (count != null) ? count.intValue() : 0;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public boolean deleteArticle(Long id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            
+            Article article = session.get(Article.class, id);
+            
+            if (article != null) {
+                session.delete(article);
+                transaction.commit();
+                return true; 
+            } else {
+                logger.warn("Article not found for ID: " + id);
+                return false; 
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); 
+            }
+            logger.error("Error deleting article with ID: " + id, e);
+            return false;
+        }
+    }
     
     
 }

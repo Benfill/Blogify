@@ -8,7 +8,7 @@
 	 model=(ArticleModel)request.getAttribute("model");
   }
 %> 
-<layout:layout title="Add article">
+<layout:dashboard >
 
 <div class="w-[40%] my-[20px] mx-auto">
       <!-- Error Message -->
@@ -76,4 +76,4 @@
     </form>
    
   </div>
-</layout:layout>
+</layout:dashboard>

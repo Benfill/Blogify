@@ -1,13 +1,14 @@
 package service.impl;
 
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import entity.Article;
-import entity.Article;
+import entity.Article; // Ensure this import is present and only once
+import model.ArticleDTO;
 import model.ArticleModel;
 import repository.impl.ArticleRepositoryImpl;
 import service.IArticleService;
@@ -20,46 +21,61 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Boolean addNewArticle(Article article) {
         Article newArticle = this.articleRepositoryImpl.save(article);
-        return newArticle.getId()!=null;
+        return newArticle.getId() != null;
     }
 
     @Override
-    public List<Article> allArticles() {
-         List<Article> articles =this.articleRepositoryImpl.getAllArticles();
-         return articles;
+    public List<ArticleDTO> getAllArticles(int page) {  
+        int from = 0;
+        int length = 5;
+
+        if (page > 1) {
+            from = length * (page - 1);
+        }
+
+        // Fetch articles from the repository (should return List<Article>)
+        List<ArticleDTO> articles = this.articleRepositoryImpl.getAllArticles(from, length); 
+
+        return articles;
+
+      
     }
 
     @Override
     public Article findArticleById(Long id) {
         Optional<Article> article = this.articleRepositoryImpl.getArticleById(id);
-
-        if (article.isPresent()) {
-            return article.get(); 
-        } else {
-            return null;
-        }
+        return article.orElse(null); // Using Optional's method for cleaner code
     }
 
     @Override
     public Boolean updateArticle(Article article) {
-       return this.articleRepositoryImpl.updateArticle(article);
+        return this.articleRepositoryImpl.updateArticle(article);
     }
-    
-	private ArticleRepositoryImpl articleRepo = new ArticleRepositoryImpl();
 
-	@Override
-	public ArticleModel getArticleById(Long id) {
-		
-		Article article = articleRepo.readById(id);
-		ArticleModel articleModel = new ArticleModel();
+    @Override
+    public ArticleModel getArticleById(Long id) {
+        Article article = articleRepositoryImpl.readById(id);
+        ArticleModel articleModel = new ArticleModel();
 
-		if (article != null) {
-			articleModel.setArticle(article);
-			articleModel.setSuccessMessage("Article Retrieved Successfully");
-		} else
-			articleModel.setErroMessage("There is an error on article retrieving operation");
+        if (article != null) {
+            articleModel.setArticle(article);
+            articleModel.setSuccessMessage("Article Retrieved Successfully");
+        } else {
+            articleModel.setErrorMessage("There is an error on article retrieving operation");
+        }
 
-		return articleModel;
-	}
+        return articleModel;
+    }
 
+    @Override
+    public int count() {
+        return this.articleRepositoryImpl.countArticles();
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        return this.articleRepositoryImpl.deleteArticle(id);
+    }
+
+   
 }
