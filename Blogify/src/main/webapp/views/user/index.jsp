@@ -1,19 +1,18 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%@ taglib prefix="layout" tagdir="/WEB-INF/tags" %>--%>
-<%@ page import="entity.User" %>
 <%@ taglib prefix="dashboard" tagdir="/WEB-INF/tags" %>
 
 <dashboard:dashboard>
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-                <div id="msgs">
+                <%-- display error/success--%>
+                <div id="msgs" class="m-4">
                     <c:if test="${not empty param.success}">
-                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
                             <span class="font-medium">Success:</span> ${param.success}
                         </div>
                     </c:if>
                     <c:if test="${not empty param.error}">
-                        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
                             <span class="font-medium">Error:</span> ${param.error}
                         </div>
                     </c:if>
@@ -125,7 +124,8 @@
                                                     class="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200">
                                                 <a href="user?action=edit&id=${user.id}"
                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                                <form action="user?action=delete&id=${user.id}" method="post">
+                                                <%--  --%>
+                                                <form action="user?action=delete&id=${user.id}" method="post" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                                     <button type="submit" class="text-red-600 hover:underline">Delete
                                                     </button>
                                                 </form>
@@ -149,7 +149,7 @@
         }
 
         window.onload = function() {
-            setTimeout(cleanUrl, 3000);
+            setTimeout(cleanUrl, 7000);
         };
     </script>
 
