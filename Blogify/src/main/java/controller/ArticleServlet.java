@@ -51,24 +51,25 @@ public class ArticleServlet extends HttpServlet {
 		validator = factory.getValidator();
 	}
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String action = req.getParameter("action");
 
-		if (action == null || action.isEmpty()) {
-			index(req, res);
-		} else if ("admin".equalsIgnoreCase(action)) {
-			admin(req, res);
-		} else if ("add".equalsIgnoreCase(action)) {
-			create(req, res);
-		} else if ("list".equalsIgnoreCase(action)) {
-			index(req, res);
-		} else if ("edit".equalsIgnoreCase(action)) {
-			edit(req, res);
-		} else if ("detail".equalsIgnoreCase(action)) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String action = req.getParameter("action");
 
-			detail(req, res);
-		}
-	}
+        if (action == null || action.isEmpty()) {
+        index(req, res);
+        } else if ("admin".equalsIgnoreCase(action)) {
+        admin(req, res);
+        } else if ("add".equalsIgnoreCase(action)) {
+        create(req, res);
+        } else if ("list".equalsIgnoreCase(action)) {
+        index(req, res);
+        } else if ("edit".equalsIgnoreCase(action)) {
+        edit(req, res);
+        } else if ("detail".equalsIgnoreCase(action)) {
+
+        detail(req, res);
+        }
+  }
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -82,6 +83,8 @@ public class ArticleServlet extends HttpServlet {
 		}
 
 	}
+
+    
 
 	// GET REQUEST
 	protected void index(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

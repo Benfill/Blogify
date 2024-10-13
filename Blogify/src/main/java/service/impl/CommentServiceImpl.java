@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import entity.Comment;
 import entity.User;
 import model.ArticleModel;
+import repository.impl.ArticleRepositoryImpl;
 import repository.impl.CommentRepositoryImpl;
 import service.ICommentService;
 
@@ -17,6 +18,9 @@ public class CommentServiceImpl implements ICommentService {
 
 	private static final Logger log = Logger.getLogger(CommentServiceImpl.class.getName());
 	private CommentRepositoryImpl commentRepo = new CommentRepositoryImpl();
+
+	
+
 
 	@Override
 	public List<Comment> getAll(int page, String filter) {
@@ -39,18 +43,17 @@ public class CommentServiceImpl implements ICommentService {
 	}
 
 	@Override
-	public void post(String content, String articleId, int userId) throws Exception {
-		if (content == null || content.trim().isEmpty() || articleId == null || userId <= 0)
-			throw new Exception("Invalid input parameters");
+    public void post(String content, String articleId, int userId) throws Exception {
+        if (content == null || content.trim().isEmpty() || articleId == null || userId <= 0)
+            throw new Exception("Invalid input parameters");
 
-		User user = new UserServiceImpl().getUserById((long) userId);
-		ArticleModel article = new ArticleServiceImpl().getArticleById(Long.parseLong(articleId));
-		Comment comment = new Comment(content, LocalDate.now(), article.getArticle(), user);
+        User user = new UserServiceImpl().getUserById((long) userId);
+        ArticleModel article = new ArticleServiceImpl().getArticleById(Long.parseLong(articleId));
+        Comment comment = new Comment(content, LocalDate.now(), article.getArticle(), user);
 
-		System.out.println("Attempting to insert comment: " + comment);
-		getCommentRepo().insert(comment);
-
-	}
+        System.out.println("Attempting to insert comment: " + comment);
+        commentRepo.insert(comment);
+    }
 
 	@Override
 	public void update(String idParam, String content) throws Exception {
