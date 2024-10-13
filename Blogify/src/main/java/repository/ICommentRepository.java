@@ -19,4 +19,6 @@ public interface ICommentRepository {
 
 	Optional<Comment> readById(int id);
 
+	long getCount();
+
 }

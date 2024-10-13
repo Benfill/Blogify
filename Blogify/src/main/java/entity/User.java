@@ -35,11 +35,11 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false)
+	@Column(nullable = false , name = "role")
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 
-	public User() {
+	public User() {	
 
 	}
 

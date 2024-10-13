@@ -20,10 +20,10 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </head>
 <body>
-<nav class="bg-white border-gray-200 dark:bg-gray-900">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo"/>
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <a  href="${pageContext.request.contextPath}/article" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
         </a>
         <button data-collapse-toggle="navbar-default" type="button"
@@ -37,27 +37,20 @@
         </button>
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+
                 <li>
                     <a href="${pageContext.request.contextPath}/article"
-                       class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                       class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white hover:text-blue-500"
                        aria-current="page">Home</a>
                 </li>
-                <li>
-                    <a href="#"
-                       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
-                </li>
-                <li>
-                    <a href="#"
-                       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
-                </li>
-                <li>
-                    <a href="#"
-                       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
-                </li>
-                <li>
-                    <a href="#"
-                       class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
-                </li>
+
+                <c:if test="${not empty loggedInUser and loggedInUser.getRole() == 'ADMIN'}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/user"
+                           class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white hover:text-blue-500"
+                           aria-current="page">Dashboard</a>
+                    </li>
+                </c:if>
                 <li>
                     <c:choose>
                         <c:when test="${ not empty sessionScope.loggedInUser }">
@@ -66,7 +59,7 @@
                                 <p class="text-white mr-4">Welcome, ${loggedInUser.getFirstName()}!</p>
                                 <form action="${pageContext.request.getContextPath()}/auth?action=logout" method="post">
                                     <button type="submit"
-                                            class="px-2 py-1 bg-red-600 text-white border hover:opacity-70">Logout
+                                            class="text-red-600 hover:underline">Logout
                                     </button>
                                 </form>
                             </div>
@@ -74,7 +67,7 @@
                         </c:when>
 
                         <c:otherwise>
-                            <a class="text-blue-500" href="auth?action=login">Login</a>
+                            <a class="text-blue-500" href="auth">Login</a>
                             <a class="text-blue-500 ml-4 hover:underline" href="auth?action=register">Register</a>
                         </c:otherwise>
 

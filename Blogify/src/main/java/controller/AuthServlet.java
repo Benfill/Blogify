@@ -83,7 +83,7 @@ public class AuthServlet extends HttpServlet {
 			if (role == null)
 				role = "CONTRIBUTOR";
 			int userCount = userServiceImpl.getAllUsers().size();
-			if(userCount == 0) role = "ADMIN";
+			if (userCount == 0) role = "ADMIN";
 
 			logger.info("name  " + first_name);
 			logger.info("second_name  " + second_name);
@@ -99,13 +99,25 @@ public class AuthServlet extends HttpServlet {
 				formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			}
 
-			LocalDate birthDate = LocalDate.parse(birth_dateStr, formatter);
+			try {
+				if (birth_dateStr.contains("-")) {
+					formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
+				} else if (birth_dateStr.contains("/")) {
+					formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); 
+				}
+	
+				birth_date = LocalDate.parse(birth_dateStr, formatter);
+	
+			} catch (DateTimeParseException e) {
+				System.out.println("Error parsing date: " + e.getMessage());
+			}
+			
 
 			User newUser = new User();
 			newUser.setFirstName(first_name);
 			newUser.setSecond_name(second_name);
 			newUser.setEmail(email);
-			newUser.setBirthDate(birthDate);
+			newUser.setBirthDate(birth_date);
 			newUser.setPassword(password);
 			newUser.setRole(UserRole.valueOf(role.toUpperCase()));
 
@@ -156,7 +168,7 @@ public class AuthServlet extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-		res.sendRedirect(req.getContextPath() + "/views/auth/login.jsp"); // Redirect to login page
+		res.sendRedirect(req.getContextPath());
 	}
 
 }

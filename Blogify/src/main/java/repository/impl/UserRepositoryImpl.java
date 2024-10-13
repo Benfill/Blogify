@@ -95,7 +95,15 @@ public class UserRepositoryImpl implements UserRepository {
 
         try {
             transaction = session.beginTransaction();
-            session.update(user);
+            User u = session.get(User.class, user.getId());
+            u.setFirstName(user.getFirstName());
+            u.setSecond_name(user.getSecondName());
+            u.setEmail(user.getEmail());
+            u.setPassword(user.getPassword());
+            u.setBirthDate(user.getBirthDate());
+            u.setRole(user.getRole());
+
+            session.update(u);
             transaction.commit();
             logger.info("User updated: {}", user.getEmail());
         } catch (Exception e) {

@@ -149,4 +149,17 @@ public class CommentRepositoryImpl implements ICommentRepository {
 		}
 	}
 
+	@Override
+	public long getCount() {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			Query<Long> query = session.createQuery("SELECT COUNT(*) FROM Comment", Long.class);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			// Log the error
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 }
