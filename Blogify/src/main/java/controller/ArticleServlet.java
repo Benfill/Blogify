@@ -31,45 +31,48 @@ import enums.ArticleStatus;
 import enums.CommentStatus;
 import model.ArticleDTO;
 import model.ArticleModel;
+import repository.impl.ArticleRepositoryImpl;
 import service.impl.ArticleServiceImpl;
 import service.impl.UserServiceImpl;
 
 public class ArticleServlet extends HttpServlet {
 
-	private static final String UPLOAD_DIRECTORY = "uploads";
-	private static final Logger logger = LoggerFactory.getLogger(ArticleServlet.class);
-	private ArticleServiceImpl articleServiceImpl;
-	private UserServiceImpl userServiceImpl;
-	private Validator validator;
+    private static final String UPLOAD_DIRECTORY = "uploads";    
+    private static final Logger logger = LoggerFactory.getLogger(ArticleServlet.class);
+    private  ArticleServiceImpl articleServiceImpl ;
+    private Validator validator;
 
-	@Override
-	public void init() throws ServletException {
-		this.articleServiceImpl = new ArticleServiceImpl();
-		this.userServiceImpl = new UserServiceImpl();
+    @Override
+    public void init() throws ServletException {
 
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		validator = factory.getValidator();
-	}
+        ArticleRepositoryImpl articleRepo = new ArticleRepositoryImpl();
+        articleServiceImpl = new ArticleServiceImpl(articleRepo);
 
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
+  
+    	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String action = req.getParameter("action");
 
         if (action == null || action.isEmpty()) {
-        index(req, res);
+          index(req, res);
         } else if ("admin".equalsIgnoreCase(action)) {
-        admin(req, res);
+          admin(req, res);
         } else if ("add".equalsIgnoreCase(action)) {
-        create(req, res);
+          create(req, res);
         } else if ("list".equalsIgnoreCase(action)) {
-        index(req, res);
+          index(req, res);
         } else if ("edit".equalsIgnoreCase(action)) {
-        edit(req, res);
+          edit(req, res);
         } else if ("detail".equalsIgnoreCase(action)) {
 
-        detail(req, res);
+          detail(req, res);
         }
-  }
+	  }
+
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
