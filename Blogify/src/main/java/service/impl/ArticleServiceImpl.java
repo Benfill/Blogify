@@ -15,7 +15,11 @@ import service.IArticleService;
 public class ArticleServiceImpl implements IArticleService {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
-    private final ArticleRepositoryImpl articleRepositoryImpl = new ArticleRepositoryImpl();
+    private  ArticleRepositoryImpl articleRepositoryImpl ;
+
+    public ArticleServiceImpl(ArticleRepositoryImpl articleRepositoryImpl){
+        this.articleRepositoryImpl = articleRepositoryImpl;
+    }
 
     @Override
     public Boolean addNewArticle(Article article) {
@@ -45,12 +49,11 @@ public class ArticleServiceImpl implements IArticleService {
        return this.articleRepositoryImpl.updateArticle(article);
     }
     
-	private ArticleRepositoryImpl articleRepo = new ArticleRepositoryImpl();
 
 	@Override
 	public ArticleModel getArticleById(Long id) {
 		
-		Article article = articleRepo.readById(id);
+		Article article = this.articleRepositoryImpl.readById(id);
 		ArticleModel articleModel = new ArticleModel();
 
 		if (article != null) {

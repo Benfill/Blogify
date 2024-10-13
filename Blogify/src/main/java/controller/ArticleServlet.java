@@ -29,6 +29,7 @@ import entity.Article;
 import entity.User;
 import enums.ArticleStatus;
 import model.ArticleModel;
+import repository.impl.ArticleRepositoryImpl;
 import service.impl.ArticleServiceImpl;
 
 public class ArticleServlet extends HttpServlet {
@@ -40,7 +41,9 @@ public class ArticleServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        this.articleServiceImpl = new ArticleServiceImpl();
+
+        ArticleRepositoryImpl articleRepo = new ArticleRepositoryImpl();
+        articleServiceImpl = new ArticleServiceImpl(articleRepo);
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
