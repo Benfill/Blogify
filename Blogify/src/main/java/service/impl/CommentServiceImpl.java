@@ -48,7 +48,7 @@ public class CommentServiceImpl implements ICommentService {
             throw new Exception("Invalid input parameters");
 
         User user = new UserServiceImpl().getUserById((long) userId);
-        ArticleModel article = new ArticleServiceImpl().getArticleById(Long.parseLong(articleId));
+        ArticleModel article = new ArticleServiceImpl(new ArticleRepositoryImpl()).getArticleById(Long.parseLong(articleId));
         Comment comment = new Comment(content, LocalDate.now(), article.getArticle(), user);
 
         System.out.println("Attempting to insert comment: " + comment);

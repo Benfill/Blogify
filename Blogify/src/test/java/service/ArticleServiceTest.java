@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 import entity.Article;
 import entity.User;
 import enums.UserRole;
+import model.ArticleDTO;
 
 public class ArticleServiceTest {
 
@@ -67,16 +69,20 @@ public class ArticleServiceTest {
     @Test 
     void testAllArticles() {
 
-        when(articleRepositoryImpl.getAllArticles()).thenReturn(mockArticles);
-        
-        List<Article> result = articleServiceImpl.allArticles();
+       List<ArticleDTO> mockArticles = new ArrayList<>();
+        mockArticles.add(new ArticleDTO(1L, "url1", "Content1", LocalDateTime.now(), LocalDateTime.now(), "DRAFT", "The title of the article1", 1L, "FirstName1", "LastName1"));
+        mockArticles.add(new ArticleDTO(2L, "url2", "Content2", LocalDateTime.now(), LocalDateTime.now(), "PUBLISHED", "The title of the article2", 2L, "FirstName2", "LastName2"));
+
+        when(articleRepositoryImpl.getAllArticles(0, 5)).thenReturn(mockArticles);
+
+        List<ArticleDTO> result = articleServiceImpl.getAllArticles(1);
 
         // Assertions
         assertEquals(2, result.size()); 
         assertEquals("The title of the article1", result.get(0).getTitle());
         assertEquals("The title of the article2", result.get(1).getTitle());
 
-        verify(articleRepositoryImpl, times(1)).getAllArticles();
+        verify(articleRepositoryImpl, times(1)).getAllArticles(0, 5);
     }
 
     @Test

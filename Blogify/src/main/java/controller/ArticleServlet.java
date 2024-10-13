@@ -332,7 +332,7 @@ public class ArticleServlet extends HttpServlet {
 		String id = req.getParameter("id");
 
 		if (id != null) {
-			boolean deleted = this.articleServiceImpl.delete(Long.parseLong(id));
+			boolean deleted = this.articleServiceImpl.deleteArticle(Long.parseLong(id));
 			if (deleted) {
 				res.sendRedirect("article?action=admin&success=Article deleted  ");
 

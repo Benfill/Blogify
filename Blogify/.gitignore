@@ -9,7 +9,8 @@
 
 # Build directories (Eclipse, Maven, or Gradle)
 bin/
-target/
+target/*
+!target/*.war
 out/
 build/
 

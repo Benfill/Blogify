@@ -1,13 +1,13 @@
 package service.impl;
 
 import java.util.*;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import entity.Article;
 import entity.Article;
+import model.ArticleDTO;
 import model.ArticleModel;
 import repository.impl.ArticleRepositoryImpl;
 import service.IArticleService;
@@ -27,11 +27,7 @@ public class ArticleServiceImpl implements IArticleService {
         return newArticle.getId()!=null;
     }
 
-    @Override
-    public List<Article> allArticles() {
-         List<Article> articles =this.articleRepositoryImpl.getAllArticles();
-         return articles;
-    }
+  
 
     @Override
     public Article findArticleById(Long id) {
@@ -60,9 +56,38 @@ public class ArticleServiceImpl implements IArticleService {
 			articleModel.setArticle(article);
 			articleModel.setSuccessMessage("Article Retrieved Successfully");
 		} else
-			articleModel.setErroMessage("There is an error on article retrieving operation");
+			articleModel.setErrorMessage("There is an error on article retrieving operation");
 
 		return articleModel;
 	}
+
+   
+    public List<ArticleDTO> getAllArticles(int page) {  
+
+        int from = 0;
+        int length = 5;
+        if (page > 1) {
+            from = length * (page - 1);
+        }
+        List<ArticleDTO> articles = this.articleRepositoryImpl.getAllArticles(from, length); 
+        return articles;
+      
+    }
+
+       @Override
+    public int count() {
+        return this.articleRepositoryImpl.countArticles();
+    }
+
+    @Override
+    public boolean deleteArticle(Long id) {
+        return this.articleRepositoryImpl.deleteArticle(id);
+    }
+
+    
+
+    
+
+    
 
 }
