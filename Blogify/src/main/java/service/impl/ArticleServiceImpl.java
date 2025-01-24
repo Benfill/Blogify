@@ -62,14 +62,14 @@ public class ArticleServiceImpl implements IArticleService {
 	}
 
    
-    public List<ArticleDTO> getAllArticles(int page) {  
+    public List<ArticleDTO> getAllArticles(int page , String filter ) {  
 
         int from = 0;
         int length = 5;
         if (page > 1) {
             from = length * (page - 1);
         }
-        List<ArticleDTO> articles = this.articleRepositoryImpl.getAllArticles(from, length); 
+        List<ArticleDTO> articles = this.articleRepositoryImpl.getAllArticles(from, length,filter); 
         return articles;
       
     }
@@ -82,6 +82,11 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public boolean deleteArticle(Long id) {
         return this.articleRepositoryImpl.deleteArticle(id);
+    }
+
+    @Override
+    public boolean like(Long articleId) {
+        return this.articleRepositoryImpl.like(articleId);
     }
 
     

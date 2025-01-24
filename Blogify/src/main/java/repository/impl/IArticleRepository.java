@@ -9,7 +9,7 @@ import model.ArticleDTO;
 public interface IArticleRepository {
 	public Article save(Article article);
 
-	public List<ArticleDTO> getAllArticles(int from, int length);
+	public List<ArticleDTO> getAllArticles(int from, int length,String statusFilter);
 
 	public Optional<Article> getArticleById(Long id);
 
@@ -20,4 +20,6 @@ public interface IArticleRepository {
 	public int countArticles();
 
 	public boolean deleteArticle(Long id);
+    public boolean like(Long articleId);
+
 }

@@ -15,6 +15,7 @@ public class ArticleDTO {
     private Long userId; 
     private String firstName; 
     private String secondName; 
+    private boolean isLiked;
 
 
     public ArticleDTO(Long id, String articlePictureUrl, String content,

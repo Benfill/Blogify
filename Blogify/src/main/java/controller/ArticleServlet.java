@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,11 @@ public class ArticleServlet extends HttpServlet {
 			update(req, res);
 		} else if ("delete".equals(action)) {
 			delete(req, res);
+		}else if("like".equals(action)){
+			String id = req.getParameter("article_id");
+			this.articleServiceImpl.like(Long.parseLong(id));
+			res.sendRedirect(req.getContextPath()+"/article?action=detail&id="+Long.parseLong(id));
+
 		}
 
 	}
@@ -97,7 +103,7 @@ public class ArticleServlet extends HttpServlet {
 		if (pageString != null && pageString.matches("-?\\d+(\\.\\d+)?"))
 			page = Integer.parseInt(pageString);
 
-		List<ArticleDTO> articles = this.articleServiceImpl.getAllArticles(page);
+		List<ArticleDTO> articles = this.articleServiceImpl.getAllArticles(page,ArticleStatus.PUBLISHED.toString());
 
 		long totalProjects = this.articleServiceImpl.count();
 		int pageSize = 5;
@@ -120,19 +126,25 @@ public class ArticleServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
 		logger.info("userf role" + loggedInUser.getRole());
-		if (loggedInUser == null || loggedInUser.getRole() == null
-				|| !loggedInUser.getRole().toString().equals("ADMIN")) {
-			res.sendRedirect(req.getContextPath());
-			return;
-		}
+	
 
 		String pageString = req.getParameter("page");
+		String pageFilter = req.getParameter("filter");
+
+		List<String> allowedFilters = Arrays.asList("DRAFT", "PUBLISHED", "ALL");
+
+   		 // If the provided filter is not in the list, throw an exception or handle accordingly
+		if (pageFilter == null || !allowedFilters.contains(pageFilter.toUpperCase())) {
+			throw new IllegalArgumentException("Invalid filter parameter");
+		}
+
+
 		int page = 1;
 
 		if (pageString != null && pageString.matches("-?\\d+(\\.\\d+)?"))
 			page = Integer.parseInt(pageString);
 
-		List<ArticleDTO> articles = this.articleServiceImpl.getAllArticles(page);
+		List<ArticleDTO> articles = this.articleServiceImpl.getAllArticles(page ,pageFilter);
 
 		long totalProjects = this.articleServiceImpl.count();
 		int pageSize = 5;
@@ -144,6 +156,7 @@ public class ArticleServlet extends HttpServlet {
 		model.setPageNumbers(pageNumbers);
 		model.setPageSize(pageSize);
 		model.setPage(page);
+		model.setFIlter(pageFilter);
 
 		req.setAttribute("model", model);
 

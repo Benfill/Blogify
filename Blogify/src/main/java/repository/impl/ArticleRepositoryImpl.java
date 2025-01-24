@@ -42,23 +42,36 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 	}
 
 	@Override
-	public List<ArticleDTO> getAllArticles(int from, int length) {
+	public List<ArticleDTO> getAllArticles(int from, int length, String statusFilter) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
+		// Base HQL query
 		String hql = "SELECT new model.ArticleDTO(a.id, a.articlePictureUrl, a.content, "
-				+ "a.creationDate, a.publishedDateTime, a.status, a.title, " + "u.id, u.firstName , u.secondName) "
-				+ "FROM Article a LEFT JOIN a.user u";
+				+ "a.creationDate, a.publishedDateTime, a.status, a.title, "
+				+ "u.id, u.firstName, u.secondName) "
+				+ "FROM Article a LEFT JOIN a.user u ";
 
-		List<ArticleDTO> articles = session.createQuery(hql, ArticleDTO.class).setFirstResult(from)
-				.setMaxResults(length).getResultList();
+		if (statusFilter != null && !statusFilter.equalsIgnoreCase("all")) {
+			hql += "WHERE a.status = :statusFilter ";
+		}
+	
+		Query<ArticleDTO> query = session.createQuery(hql, ArticleDTO.class)
+											.setFirstResult(from)
+											.setMaxResults(length);
+	
+		// Set the statusFilter parameter only if it's not "all"
+		if (statusFilter != null && !statusFilter.equalsIgnoreCase("all")) {
+			query.setParameter("statusFilter", statusFilter);
+		}
+	
+		List<ArticleDTO> articles = query.getResultList();
 
 		session.getTransaction().commit();
 		session.close();
 
 		return articles;
 	}
-
 	@Override
 	public Optional<Article> getArticleById(Long id) {
 		Transaction transaction = null;
@@ -166,5 +179,35 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 			return false;
 		}
 	}
+
+	@Override
+	public boolean like(Long articleId) {
+		Transaction transaction = null;
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			transaction = session.beginTransaction();
+
+			Article existingArticle = session.get(Article.class, articleId);
+
+			if (existingArticle != null) {
+				existingArticle.setIsLiked(!existingArticle.getIsLiked());
+				
+
+				session.update(existingArticle);
+				transaction.commit();
+				return true;
+			} else {
+				logger.warn("Article not found for ID: " + articleId);
+				return false;
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			logger.error("Error updating article", e);
+			return false;
+		}
+	}
+
+	
 
 }

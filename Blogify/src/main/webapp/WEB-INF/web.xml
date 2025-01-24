@@ -50,7 +50,15 @@
 		<url-pattern>/comment/*</url-pattern>
 	</servlet-mapping>
 	<!-- Comment mapping -->
-	
+
+	<!-- Serve static resources from /uploads -->
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/uploads/*</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- Default mapping  -->
 	<servlet-mapping>
 		<servlet-name>ArticleServlet</servlet-name>
 		<url-pattern>/</url-pattern>

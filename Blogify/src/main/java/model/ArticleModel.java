@@ -22,6 +22,7 @@ public class ArticleModel {
     private int page ;
     private long pageNumbers;
     private int pageSize;
+    private String filter;
 
 
     // Corrected Getter and Setter for errorMessage
@@ -135,5 +136,13 @@ public class ArticleModel {
     
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public void setFIlter(String filter){
+        this.filter = filter;
+    }
+
+    public String getFilter(){
+        return this.filter;
     }
 }

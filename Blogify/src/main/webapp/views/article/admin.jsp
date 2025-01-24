@@ -27,8 +27,22 @@
                 </div>
             </c:if>
         </div>
-        <div class="my-4 mx-2">
-            <a class="bg-sky-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " href="${pageContext.request.contextPath}/article?action=add">Add new</a>
+        <div class="flex flex-row w-full justify-between my-4 mx-2" style="align-items: center;">
+            <div class="h-[50px] text-gray-900" >
+                <form class="max-w-sm mx-auto">
+                    <label for="underline_select" class="sr-only">Underline select</label>
+                    <select onchange="submitFilter()" id="filter" name="filter" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                        <option selected disabled>Filter by</option>
+                        <option value="ALL">ALL</option>
+                        <option value="DRAFT">DRAFT</option>
+                        <option value="PUBLISHED">PUBLISHED</option>
+                    </select>
+                </form>
+                
+            </div>
+            <div>
+                <a class="bg-sky-700 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " href="${pageContext.request.contextPath}/article?action=add">Add new</a>
+            </div>
         </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -120,17 +134,17 @@
         <ul class="inline-flex -space-x-px text-base h-10">
           <c:if test="${model.page > 1}">
           <li>
-            <a href="${pageContext.request.contextPath}/article?action=admin&page=${model.page - 1}" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+            <a href="${pageContext.request.contextPath}/article?action=admin&page=${model.page - 1}&filter=${model.filter}" onclick="paginate()" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
           </li>
           </c:if>
           <c:forEach begin="1" end="${model.pageNumbers}" var="pageNum">
           <li>
-            <a href="${pageContext.request.contextPath}/article?action=admin&page=${pageNum}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">${pageNum}</a>
+            <a href="${pageContext.request.contextPath}/article?action=admin&page=${pageNum}&filter=${model.filter}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">${pageNum}</a>
           </li>
           </c:forEach>
           <c:if test="${model.page < model.pageNumbers}">
           <li>
-            <a href="${pageContext.request.contextPath}/article?action=admin&page=${model.page + 1}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+            <a href="${pageContext.request.contextPath}/article?action=admin&page=${model.page + 1}&filter=${model.filter}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
           </li>
           </c:if>
         </ul>
@@ -142,5 +156,27 @@
 
    
     <!-- <script src="${pageContext.request.contextPath}/script/index.js"></script> -->
+
+    <script>
+      
+        const statusSelect = document.getElementById("filter");
+        function submitFilter() {
+            const status = statusSelect.value;
+            if (status !== "ALL") {
+                console.log("sst"+status);
+                
+                window.location.href = `/blogify/article?action=admin&filter=`+status; 
+            } else {
+                window.location.href = `/blogify/article?action=admin&filter=ALL`;
+            }
+        }
+
+        function paginate(){
+            const status = statusSelect.value;
+            window.location.href = `/blogify/article?action=admin&filter=`+status+`&filter`; 
+
+            
+        }
+    </script>
 
 </layout:dashboard>

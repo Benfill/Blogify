@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +17,6 @@ import javax.persistence.CascadeType;
 
 import java.util.*;
 
-import enums.ArticleStatus;
 
 
 @Entity
@@ -52,6 +49,12 @@ public class Article {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "isLiked" ,nullable = false)
+    private boolean isLiked;
+
+  
+
+
    
 
     // @Column(name = "user_id")
@@ -65,6 +68,7 @@ public class Article {
 
     public Article() {
         this.creationDate = LocalDateTime.now();
+        this.isLiked = false;
     }
 
     public Article(String articlePictureUrl, String content, LocalDateTime creationDate, LocalDateTime publishedDateTime, String status, String title, User user) {
@@ -75,6 +79,8 @@ public class Article {
         this.status = status;
         this.title = title;
         this.user = user;
+        this.isLiked = false;
+
 
     }
 
@@ -145,5 +151,13 @@ public class Article {
 
     public List<Comment> getComments(){
         return this.comments;
+    }
+
+    public boolean getIsLiked(){
+        return this.isLiked;
+    }
+
+    public void setIsLiked(boolean isLiked){
+        this.isLiked = isLiked;
     }
 }

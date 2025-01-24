@@ -18,10 +18,10 @@ public class HibernateUtil {
 		
 			 Dotenv dotenv = Dotenv.configure().directory("/home/mhachami/Desktop/projects/A2_brief/Blogify/Blogify/.env").load();
 
-			 String driver = dotenv.get("DB_DRIVER");
-			 String url = dotenv.get("DB_URL");
-			 String username = dotenv.get("DB_USERNAME");
-			 String password = dotenv.get("DB_PASSWORD");
+			 String driver = "com.mysql.jdbc.Driver";
+			 String url = "jdbc:mysql://localhost:3306/blogify";
+			 String username = "phpmyadmin";
+			 String password = "Fchmod@123";
 
 
 

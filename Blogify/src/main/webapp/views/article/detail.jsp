@@ -2,6 +2,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="layout" tagdir="/WEB-INF/tags"%>
 
+<style>
+	.like{
+		background: red;
+		padding: 20px;
+		border-radius: 10px;
+	}
+</style>
+
 <layout:layout title="Article Detail">
 
 	<div
@@ -34,16 +42,7 @@
 								<a href="#" rel="author"
 									class="text-xl font-bold text-gray-900 dark:text-white">${user.firstName}</a>
 								<p class="text-base text-gray-500 dark:text-gray-400"></p>
-								<p class="text-base text-gray-500 dark:text-gray-400">
-									<%-- 
-                                    <time pubdate datetime="${article.formattedCreationDate}" title="${article.formattedCreationDate}">
-                                        ${article.formattedCreationDate}
-                                    </time>
-                                    <time pubdate datetime="${article.formattedPublishedDate}" title="${article.formattedPublishedDate}">
-                                        ${article.formattedPublishedDate}
-                                    </time>
-                                    --%>
-								</p>
+								
 							</div>
 							<c:if test="${sessionScope.loggedInUser != null && user.id == sessionScope.loggedInUser.id}" >
 
@@ -73,6 +72,21 @@
 							class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
 							(${ commentCount })</h2>
 					</div>
+
+					
+
+					<form method="post" action="article?action=like">
+						<input type="hidden" value="${article.id}" name="article_id" />
+						<!-- <input type="text" value="" /> -->
+						<c:if test="${article.isLiked }">
+							<button class="" id="likeBtn"  onclick="Like()">dislike</button>
+						</c:if>
+						<c:if test="${!article.isLiked }">
+							<button class="like" id="likeBtn"  onclick="Like()">like</button>
+						</c:if>
+						
+					</form>
+
 
 					<c:if test="${sessionScope.loggedInUser != null}">
 						<form class="mb-6" method="post"
@@ -380,5 +394,23 @@
 			</div>
 		</div>
 	</section>
+
+<script>
+	const likeBtn = document.getElementById("likeBtn");
+	function Like(){
+	var isLIked = likeBtn.classList.contains("like");
+
+		if(isLIked){
+			console.log("dislike")
+
+			likeBtn.classList.remove("like")
+		}else{
+			console.log("like")
+			likeBtn.classList.add("like")
+
+
+		}
+	}
+  </script>
 </layout:layout>
 

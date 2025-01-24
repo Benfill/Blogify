@@ -18,7 +18,7 @@
         <property name="hibernate.current_session_context_class">thread</property>
 
         <!-- Echo all executed SQL to stdout -->
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
 
         <!-- Format the SQL in logs -->
         <property name="hibernate.format_sql">true</property>

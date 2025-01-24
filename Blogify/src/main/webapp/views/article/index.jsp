@@ -10,6 +10,7 @@
   }
 %> 
 
+
 <layout:layout title="Home">
 
 <section x-data="{ slideWidth: 0, activeSlide: 0, slideCount: 3 }" class="relative py-20 md:py-32 overflow-hidden">
@@ -50,7 +51,7 @@
                   class="group block max-w-sm mx-auto md:max-w-none h-full border border-gray-100 bg-white rounded-xl transform hover:scale-105 transition duration-500"
                    href="${pageContext.request.contextPath}/article?action=detail&id=${article.id}">
                     <div class="flex items-center justify-between px-4 py-5">
-                      <span class="text-sm">@${article.userFirstName} ${article.userSecondName}</span>
+                      <span class="text-sm">@${article.userFirstName}</span>
                       <img src="saturn-assets/images/instagram-photos/icon-instagram.svg" alt="">
                     </div>
                     <div class="h-72">
@@ -62,7 +63,6 @@
                       <span class="block text-sm tetx-gray-800 mb-2.5">${article.title}</span>
                       <div class="flex items-center">
                         <img class="mr-1.5" src="saturn-assets/images/instagram-photos/heart-icon.svg" alt="">
-                        <span class="text-sm text-gray-500">12.903</span>
                       </div>
                     </div>
                   </a>
@@ -103,6 +103,7 @@
     </div>
   </div>
 </section>
+
 
 
 </layout:layout>

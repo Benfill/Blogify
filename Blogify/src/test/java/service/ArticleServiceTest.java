@@ -73,16 +73,16 @@ public class ArticleServiceTest {
         mockArticles.add(new ArticleDTO(1L, "url1", "Content1", LocalDateTime.now(), LocalDateTime.now(), "DRAFT", "The title of the article1", 1L, "FirstName1", "LastName1"));
         mockArticles.add(new ArticleDTO(2L, "url2", "Content2", LocalDateTime.now(), LocalDateTime.now(), "PUBLISHED", "The title of the article2", 2L, "FirstName2", "LastName2"));
 
-        when(articleRepositoryImpl.getAllArticles(0, 5)).thenReturn(mockArticles);
+        when(articleRepositoryImpl.getAllArticles(0, 5,"ALL")).thenReturn(mockArticles);
 
-        List<ArticleDTO> result = articleServiceImpl.getAllArticles(1);
+        List<ArticleDTO> result = articleServiceImpl.getAllArticles(1,"ALL");
 
         // Assertions
         assertEquals(2, result.size()); 
         assertEquals("The title of the article1", result.get(0).getTitle());
         assertEquals("The title of the article2", result.get(1).getTitle());
 
-        verify(articleRepositoryImpl, times(1)).getAllArticles(0, 5);
+        verify(articleRepositoryImpl, times(1)).getAllArticles(0, 5,"ALL");
     }
 
     @Test
@@ -157,6 +157,26 @@ public class ArticleServiceTest {
         assertTrue(result, "The updateArticle method should return true when an article is updated successfully.");
         
         verify(articleRepositoryImpl).updateArticle(updArticle);
+    }
+
+
+    @Test
+    public void testLikeFunction() {
+        Long articleId = 1L;
+        Article existingArticle = mockArticles.get(0);
+        existingArticle.setId(articleId); 
+        
+        when(articleRepositoryImpl.like(articleId)).thenReturn(true);
+
+        Boolean result = articleServiceImpl.like(articleId);
+
+        assertTrue(result, "The status of liked is changed");
+        verify(articleRepositoryImpl).like(articleId);
+
+
+
+       
+
     }
     
 
